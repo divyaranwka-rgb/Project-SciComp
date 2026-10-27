@@ -284,6 +284,46 @@ section {
 
 /* ---------- ABOUT PAGE ---------- */
 
+.about-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.about-photo {
+  margin: 0;
+  position: sticky;
+  top: 96px;
+  padding: 5px;
+  border-radius: calc(var(--radius) + 5px);
+  background: var(--gradient);
+  box-shadow: var(--shadow);
+}
+
+.about-layout .about-card:nth-of-type(3) {
+  grid-column: 1 / -1;
+}
+
+.about-photo img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+}
+
+@media (max-width: 860px) {
+  .about-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .about-photo {
+    position: static;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}
+
 .about-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
