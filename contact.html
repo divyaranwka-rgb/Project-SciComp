@@ -17,7 +17,7 @@
     document.documentElement.setAttribute('data-theme', t);
   })();
 </script>
-<link rel="stylesheet" href="style.css?v=20261027g">
+<link rel="stylesheet" href="style.css?v=20261027i">
 </head>
 <body>
 
@@ -53,18 +53,68 @@
   <div class="container">
     <span class="eyebrow">Get In Touch</span>
     <h1>Let's <span class="highlight">Connect</span></h1>
-    <p class="tagline">Whether it's an opportunity, a project idea, or just a hello — reach out through any of these.</p>
+    <p class="tagline">Have an opportunity, a project idea, a tricky problem, or a hot take on cricket? I'd love to hear it.</p>
   </div>
 </header>
 
 <section style="padding-top:0;">
   <div class="container">
+    <div class="compose-card">
+      <h2>✍️ Drop me a line</h2>
+      <p class="compose-intro">Pick a topic, add a note, and your email app will open with everything ready to send.</p>
+      <form id="compose" novalidate>
+        <fieldset class="topic-picker">
+          <legend>What's it about?</legend>
+          <label class="topic">
+            <input type="radio" name="topic" value="Internship or opportunity" data-placeholder="Hi! I'd love to talk about an opportunity…" checked>
+            <span>💼 Internship or opportunity</span>
+          </label>
+          <label class="topic">
+            <input type="radio" name="topic" value="Project collaboration" data-placeholder="I'm working on something you might like…">
+            <span>🤝 Project collaboration</span>
+          </label>
+          <label class="topic">
+            <input type="radio" name="topic" value="Maths or coding question" data-placeholder="Here's a problem I've been stuck on…">
+            <span>🧮 Maths or coding question</span>
+          </label>
+          <label class="topic">
+            <input type="radio" name="topic" value="Cricket or F1 banter" data-placeholder="Settle this for me: who's the greatest of all time?">
+            <span>🏏 Cricket or F1 banter</span>
+          </label>
+          <label class="topic">
+            <input type="radio" name="topic" value="Just saying hi" data-placeholder="Hey! Just wanted to say hello…">
+            <span>👋 Just saying hi</span>
+          </label>
+        </fieldset>
+        <label class="field">
+          <span>Your name</span>
+          <input type="text" name="name" autocomplete="name" placeholder="Optional">
+        </label>
+        <label class="field">
+          <span>Message</span>
+          <textarea name="message" rows="4" placeholder="Hi! I'd love to talk about an opportunity…"></textarea>
+        </label>
+        <div class="compose-actions">
+          <button type="submit" class="btn btn-primary">Open in my email app ✉️</button>
+          <button type="button" class="btn btn-secondary" id="copy-email" data-email="divyaranwka@gmail.com">Copy email address</button>
+          <span class="copy-status" role="status" aria-live="polite"></span>
+        </div>
+        <p class="compose-note">Nothing is sent from this page. It just prepares an email in your own app.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2 class="section-title center">Find Me Online</h2>
+    <p class="section-subtitle center">Code, competitions, and everything in between.</p>
     <div class="contact-grid">
 
       <a href="mailto:divyaranwka@gmail.com" class="contact-card">
         <div class="icon">✉️</div>
         <h3>Email</h3>
-        <span>divyaranwka@gmail.com</span>
+        <span>divyaranwka@<wbr>gmail.com</span>
       </a>
 
       <a href="https://github.com/divyaranwka-rgb" target="_blank" rel="noopener" class="contact-card">
@@ -77,6 +127,12 @@
         <div class="icon">💼</div>
         <h3>LinkedIn</h3>
         <span>Divya Ranwka</span>
+      </a>
+
+      <a href="https://codeforces.com/profile/Uncomplecable" target="_blank" rel="noopener" class="contact-card">
+        <div class="icon">🏆</div>
+        <h3>Codeforces</h3>
+        <span>Uncomplecable</span>
       </a>
 
       <a href="https://www.instagram.com/divyaranwka2008/" target="_blank" rel="noopener" class="contact-card">
@@ -95,7 +151,7 @@
   </div>
 </footer>
 
-<script src="script.js?v=20261027g"></script>
+<script src="script.js?v=20261027i"></script>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>

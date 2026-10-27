@@ -1091,7 +1091,7 @@ section.band {
 
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 22px;
 }
 
@@ -1099,7 +1099,7 @@ section.band {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 28px 22px;
+  padding: 28px 12px;
   text-align: center;
   box-shadow: var(--shadow);
   transition: transform 0.15s ease;
@@ -1128,8 +1128,168 @@ section.band {
 
 .contact-card span {
   color: var(--text-soft);
-  font-size: 0.9rem;
+  font-size: 0.86rem;
   word-break: break-word;
+}
+
+/* Contact: message builder */
+
+.compose-card {
+  max-width: 820px;
+  margin: 0 auto;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  box-shadow: var(--shadow);
+}
+
+.compose-card h2 {
+  margin: 0 0 6px;
+  font-size: 1.5rem;
+}
+
+.compose-intro {
+  margin: 0 0 24px;
+  color: var(--text-soft);
+}
+
+.topic-picker {
+  border: none;
+  margin: 0 0 22px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.topic-picker legend,
+.field > span {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.topic {
+  position: relative;
+  cursor: pointer;
+}
+
+.topic input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.topic span {
+  display: inline-block;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  font-weight: 600;
+  font-size: 0.93rem;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.topic:hover span {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.topic input:checked + span {
+  background: var(--gradient);
+  color: var(--on-gradient);
+  border-color: transparent;
+}
+
+.topic input:focus-visible + span {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.field {
+  display: block;
+  margin-bottom: 18px;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+  resize: vertical;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--text-soft);
+  opacity: 0.8;
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--bg-alt);
+}
+
+.compose-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.compose-actions .btn {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.copy-status {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--ongoing-text);
+}
+
+.compose-note {
+  margin: 16px 0 0;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
+
+@media (max-width: 560px) {
+  .compose-card {
+    padding: 22px;
+  }
+
+  .compose-actions .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+:root[data-theme="contrast"] .compose-card {
+  border-width: 2px;
+}
+
+:root[data-theme="contrast"] :is(.topic span, .field input, .field textarea) {
+  border: 2px solid var(--border);
+}
+
+:root[data-theme="contrast"] .topic input:checked + span {
+  border-color: var(--accent);
+}
+
+:root[data-theme="contrast"] :is(.field input, .field textarea):focus {
+  border-color: var(--accent);
+  box-shadow: none;
 }
 
 /* ---------- FOOTER ---------- */

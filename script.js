@@ -288,4 +288,53 @@ document.addEventListener('DOMContentLoaded', function () {
     updateText(target);
     draw(shown);
   }
+
+  // Contact: message builder -> opens the visitor's email app with a prefilled message
+  var compose = document.getElementById('compose');
+  if (compose) {
+    var EMAIL = 'divyaranwka@gmail.com';
+    var msg = compose.querySelector('textarea[name="message"]');
+    compose.querySelectorAll('input[name="topic"]').forEach(function (r) {
+      r.addEventListener('change', function () { msg.placeholder = r.getAttribute('data-placeholder'); });
+    });
+
+    compose.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var topicEl = compose.querySelector('input[name="topic"]:checked');
+      var topic = topicEl ? topicEl.value : 'Hello';
+      var name = compose.querySelector('input[name="name"]').value.trim();
+      var text = msg.value.trim();
+      var subject = topic + (name ? ' (from ' + name + ')' : '');
+      var body = text + (name ? (text ? '\n\n' : '') + '— ' + name : '');
+      var link = document.createElement('a');
+      link.href = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(subject) +
+        (body ? '&body=' + encodeURIComponent(body) : '');
+      link.click();
+    });
+
+    var copyBtn = document.getElementById('copy-email');
+    var status = compose.querySelector('.copy-status');
+    var statusTimer;
+    function showStatus(t) {
+      status.textContent = t;
+      clearTimeout(statusTimer);
+      statusTimer = setTimeout(function () { status.textContent = ''; }, 2500);
+    }
+    function fallbackCopy() {
+      var tmp = document.createElement('textarea');
+      tmp.value = EMAIL; tmp.setAttribute('readonly', ''); tmp.style.position = 'fixed'; tmp.style.opacity = '0';
+      document.body.appendChild(tmp); tmp.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (err) {}
+      document.body.removeChild(tmp);
+      showStatus(ok ? 'Copied! ✓' : EMAIL);
+    }
+    copyBtn.addEventListener('click', function () {
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(EMAIL).then(function () { showStatus('Copied! ✓'); }, fallbackCopy);
+      } else {
+        fallbackCopy();
+      }
+    });
+  }
 });
