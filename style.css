@@ -640,6 +640,156 @@ section {
   font-size: 0.92rem;
 }
 
+/* ---------- HOME: HEADSHOT ---------- */
+
+.hero-avatar {
+  width: 148px;
+  height: 148px;
+  margin: 0 auto 22px;
+  padding: 4px;
+  border-radius: 50%;
+  background: var(--gradient);
+  box-shadow: var(--shadow);
+}
+
+.hero-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--bg);
+}
+
+/* ---------- ABOUT: SKILLS & COURSEWORK ---------- */
+
+section.band {
+  background: var(--bg-alt);
+}
+
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 22px;
+}
+
+.skill-group,
+.course-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+.skill-group h3,
+.course-card h3 {
+  margin: 0 0 14px;
+  font-size: 1.05rem;
+}
+
+.skill-group.wide {
+  grid-column: 1 / -1;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip-row .chip {
+  padding: 6px 14px;
+  font-size: 0.88rem;
+  box-shadow: none;
+  background: var(--bg-alt);
+  border-color: transparent;
+  color: var(--accent);
+}
+
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 22px;
+}
+
+.course-card {
+  position: relative;
+  border-top: 5px solid var(--purple);
+}
+
+@media (min-width: 900px) {
+  .course-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.course-card.featured {
+  grid-column: 1 / -1;
+}
+
+.course-card.featured p:not(.course-sub) {
+  max-width: 720px;
+  font-size: 1rem;
+}
+
+.course-card.featured h3 {
+  font-size: 1.25rem;
+}
+
+.course-card:nth-child(2) { border-top-color: var(--pink); }
+.course-card:nth-child(3) { border-top-color: var(--orange); }
+.course-card:nth-child(4) { border-top-color: var(--teal); }
+
+.course-card h3 {
+  margin-bottom: 4px;
+}
+
+.course-sub {
+  margin: 0 0 12px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.course-card p:not(.course-sub) {
+  margin: 10px 0 0;
+  color: var(--text-soft);
+  font-size: 0.93rem;
+}
+
+.course-badge {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background: var(--ongoing-bg);
+  color: var(--ongoing-text);
+}
+
+:root[data-theme="contrast"] :is(.skill-group, .course-card) {
+  border-width: 2px;
+  border-top-width: 5px;
+}
+
+:root[data-theme="contrast"] .course-card:nth-child(4) {
+  border-top-color: var(--accent);
+}
+
+:root[data-theme="contrast"] :is(.chip-row .chip, .course-badge) {
+  background: #000;
+  border: 1.5px solid currentColor;
+}
+
+:root[data-theme="contrast"] section.band {
+  border-top: 2px solid var(--border);
+  border-bottom: 2px solid var(--border);
+}
+
 /* ---------- PROJECTS PAGE ---------- */
 
 .project-grid {
