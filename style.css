@@ -30,11 +30,14 @@
   --note-bg: #fff7e6;
   --note-text: #7a5c00;
   --hero-glow: 0.15;
+  --on-gradient: #fff;
   color-scheme: light;
 }
 
-/* Dark theme: used when the visitor picks it, or when their device prefers
-   dark and they haven't picked light. Keep both blocks in sync. */
+/* Themes. script in each page's <head> resolves the visitor's choice
+   (auto / light / dark / contrast) and sets data-theme before first paint.
+   The @media block below is only a fallback for visitors without JavaScript;
+   keep it in sync with the dark block. */
 :root[data-theme="dark"] {
   --bg: #13101b;
   --bg-alt: #251d38;
@@ -56,7 +59,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root:not([data-theme]) {
     --bg: #13101b;
     --bg-alt: #251d38;
     --text: #ece8f6;
@@ -75,6 +78,59 @@
     --hero-glow: 0.22;
     color-scheme: dark;
   }
+}
+
+/* High contrast: black / white with bright yellow accents and cyan links.
+   Gradients become solid yellow because purple on black is too dim. */
+:root[data-theme="contrast"] {
+  --bg: #000;
+  --bg-alt: #000;
+  --text: #fff;
+  --text-soft: #f2f2f2;
+  --purple: #ffe14d;
+  --pink: #ffe14d;
+  --orange: #ffe14d;
+  --gradient: linear-gradient(#ffe14d, #ffe14d);
+  --card-bg: #000;
+  --border: #fff;
+  --shadow: none;
+  --accent: #ffe14d;
+  --link: #5ce1ff;
+  --nav-bg: #000;
+  --chip-shadow: none;
+  --ongoing-bg: #000;
+  --ongoing-text: #6dffb5;
+  --note-bg: #000;
+  --note-text: #ffe14d;
+  --hero-glow: 0;
+  --on-gradient: #000;
+  color-scheme: dark;
+}
+
+:root[data-theme="contrast"] body {
+  transition: none;
+}
+
+:root[data-theme="contrast"] :is(.about-card, .project-card, .highlight-card, .contact-card, .chip, .navbar, footer) {
+  border-width: 2px;
+}
+
+:root[data-theme="contrast"] :is(.tag, .eyebrow) {
+  border: 1.5px solid currentColor;
+}
+
+:root[data-theme="contrast"] :is(.project-link, .contact-card h3, main a, section p a) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+:root[data-theme="contrast"] .project-thumb {
+  border-bottom: 2px solid var(--border);
+}
+
+:root[data-theme="contrast"] :focus-visible {
+  outline: 3px solid var(--link) !important;
+  outline-offset: 3px;
 }
 
 * {
@@ -165,13 +221,17 @@ a {
   margin-right: auto;
 }
 
+.theme-picker {
+  position: relative;
+  margin-left: 22px;
+}
+
 .theme-toggle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 38px;
   height: 38px;
-  margin-left: 22px;
   padding: 0;
   border-radius: 50%;
   border: 1px solid var(--border);
@@ -181,13 +241,18 @@ a {
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
-.theme-toggle:hover {
-  transform: rotate(-15deg);
+.theme-toggle:hover,
+.theme-toggle[aria-expanded="true"] {
   border-color: var(--accent);
 }
 
+.theme-toggle:hover {
+  transform: rotate(-15deg);
+}
+
 .theme-toggle:focus-visible,
-.nav-toggle:focus-visible {
+.nav-toggle:focus-visible,
+.theme-menu button:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
@@ -197,13 +262,89 @@ a {
   height: 20px;
 }
 
-/* show the moon in light mode (click -> dark) and the sun in dark mode */
-.theme-toggle .icon-sun { display: none; }
-:root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
-:root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .theme-toggle .icon-sun { display: block; }
-  :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: none; }
+/* the button shows the icon of the theme currently in use */
+.theme-toggle .icon-moon,
+.theme-toggle .icon-contrast { display: none; }
+:root[data-theme="dark"] .theme-toggle .icon-sun,
+:root[data-theme="contrast"] .theme-toggle .icon-sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+:root[data-theme="contrast"] .theme-toggle .icon-contrast { display: block; }
+
+.theme-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 200;
+  min-width: 220px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+.theme-menu[hidden] {
+  display: none;
+}
+
+.theme-menu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 12px;
+  border: none;
+  border-radius: 9px;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.theme-menu button:hover {
+  background: var(--bg-alt);
+}
+
+.theme-menu button > span {
+  white-space: nowrap;
+  line-height: 1.3;
+}
+
+.theme-menu button svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--accent);
+}
+
+.theme-menu .check {
+  margin-left: auto;
+  color: var(--accent);
+  visibility: hidden;
+}
+
+.theme-menu button[aria-checked="true"] .check {
+  visibility: visible;
+}
+
+.theme-menu .hint {
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: var(--text-soft);
+}
+
+:root[data-theme="contrast"] .theme-menu {
+  border-width: 2px;
+}
+
+:root[data-theme="contrast"] .theme-menu button:hover {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
 }
 
 .nav-toggle {
@@ -303,7 +444,7 @@ a {
 
 .btn-primary {
   background: var(--gradient);
-  color: #fff;
+  color: var(--on-gradient);
   box-shadow: var(--shadow);
 }
 
@@ -623,7 +764,7 @@ section {
   justify-content: center;
   border-radius: 50%;
   background: var(--gradient);
-  color: #fff;
+  color: var(--on-gradient);
 }
 
 .contact-card h3 {
@@ -654,7 +795,7 @@ footer {
     display: flex;
   }
 
-  .theme-toggle {
+  .theme-picker {
     margin-left: 0;
     margin-right: 10px;
   }
