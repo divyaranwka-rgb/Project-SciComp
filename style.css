@@ -687,6 +687,12 @@ section.band {
   font-size: 1.05rem;
 }
 
+@media (min-width: 900px) {
+  .skill-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 .skill-group.wide {
   grid-column: 1 / -1;
 }
