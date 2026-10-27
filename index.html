@@ -17,7 +17,7 @@
     document.documentElement.setAttribute('data-theme', t);
   })();
 </script>
-<link rel="stylesheet" href="style.css?v=20261027c">
+<link rel="stylesheet" href="style.css?v=20261027e">
 </head>
 <body>
 
@@ -54,9 +54,13 @@
     <div class="hero-avatar">
       <img src="images/headshot.jpg" width="416" height="416" alt="Headshot">
     </div>
-    <span class="eyebrow">Student</span>
+    <span class="eyebrow">Mathematics · IIT Madras</span>
     <h1>Hi, I'm <span class="highlight">Divya Ranwka</span> 👋</h1>
-    <p class="tagline">Mathematics major at IIT Madras, turning curiosity into code — and chasing a good cover drive or a well-placed lob when I'm not at my desk.</p>
+    <p class="rotator">
+      <span class="sr-only">I'm into rigorous proofs, competitive programming, machine learning, and cricket &amp; F1.</span>
+      <span aria-hidden="true">I'm into <span class="rotator-word" data-words="rigorous proofs|competitive programming|machine learning|cricket &amp; F1">rigorous proofs</span><span class="caret"></span></span>
+    </p>
+    <p class="tagline">I study mathematics at IIT Madras, where I like proving things as much as building them, from first-principles calculus to machine-learning models. When I'm not at my desk, I'm chasing a good cover drive or a well-placed lob.</p>
     <div class="cta-row">
       <a href="projects.html" class="btn btn-primary">View My Projects</a>
       <a href="contact.html" class="btn btn-secondary">Get In Touch</a>
@@ -66,21 +70,48 @@
 
 <section>
   <div class="container">
+    <h2 class="section-title center">What I'm Up To</h2>
+    <p class="section-subtitle center">A snapshot of what's keeping me busy this semester.</p>
     <div class="highlight-grid">
       <div class="highlight-card">
         <div class="emoji">📐</div>
-        <h3>Mathematics @ IIT Madras</h3>
-        <p>Exploring the world of numbers, logic, and problem-solving as a Math major at one of India's top institutes.</p>
+        <span class="card-label">Studying</span>
+        <h3>Calculus, built from scratch</h3>
+        <p>A proof-based course that starts from the real numbers themselves, alongside linear algebra and scientific computing.</p>
+        <a class="card-link" href="about.html#coursework">See my coursework →</a>
       </div>
       <div class="highlight-card">
-        <div class="emoji">💻</div>
-        <h3>Building Things</h3>
-        <p>I enjoy programming and picking up new tools — this site itself is a small project in progress!</p>
+        <div class="emoji">🏆</div>
+        <span class="card-label">Practising</span>
+        <h3>Competitive programming</h3>
+        <p>Solving algorithmic problems in C++ on Codeforces to sharpen my algorithms and data structures.</p>
+        <a class="card-link" href="https://codeforces.com/profile/Uncomplecable" target="_blank" rel="noopener">My Codeforces profile →</a>
       </div>
       <div class="highlight-card">
-        <div class="emoji">🏏</div>
-        <h3>Sports Enthusiast</h3>
-        <p>Cricket, tennis, football, and F1 — if there's a scoreboard or a racetrack, I'm probably watching or playing.</p>
+        <div class="emoji">🫁</div>
+        <span class="card-label">Latest project</span>
+        <h3>Lung cancer risk model</h3>
+        <p>A logistic regression model that classifies lung cancer risk from lifestyle and clinical factors, built end to end in Python.</p>
+        <a class="card-link" href="projects.html">View my projects →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="playground">
+  <div class="container">
+    <h2 class="section-title center">∑ Maths Playground</h2>
+    <p class="section-subtitle center">Can a polynomial pretend to be a sine wave? Add terms of its Taylor series and watch the approximation hug <em>sin&nbsp;x</em> further and further from zero.</p>
+    <div class="playground-card">
+      <canvas id="taylor-canvas" role="img" aria-label="Graph of sin x and its Taylor polynomial approximation"></canvas>
+      <div class="playground-controls">
+        <label for="taylor-terms">Terms: <strong id="taylor-count">3</strong> <span class="muted" id="taylor-degree">(degree 5)</span></label>
+        <input type="range" id="taylor-terms" min="1" max="10" step="1" value="3">
+        <p class="taylor-formula" id="taylor-formula" aria-live="polite"></p>
+        <div class="legend">
+          <span><i class="swatch swatch-sin"></i> sin x</span>
+          <span><i class="swatch swatch-poly"></i> Taylor polynomial</span>
+        </div>
       </div>
     </div>
   </div>
@@ -88,15 +119,14 @@
 
 <section>
   <div class="container">
-    <h2 class="section-title" style="text-align:center;">A Quick Snapshot</h2>
-    <p class="section-subtitle" style="margin-left:auto;margin-right:auto;text-align:center;">A few things that keep me busy outside of coursework.</p>
+    <h2 class="section-title center">Off the Clock</h2>
+    <p class="section-subtitle center">If there's a scoreboard or a racetrack, I'm probably watching or playing.</p>
     <div class="chip-grid">
       <span class="chip">🏏 Cricket</span>
       <span class="chip">🎾 Tennis &amp; Racket Sports</span>
       <span class="chip">⚽ Football</span>
       <span class="chip">🏎️ Formula 1</span>
       <span class="chip">🎵 Boy Bands &amp; Pop</span>
-      <span class="chip">👨‍💻 Programming</span>
     </div>
   </div>
 </section>
@@ -107,7 +137,7 @@
   </div>
 </footer>
 
-<script src="script.js?v=20261027c"></script>
+<script src="script.js?v=20261027e"></script>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
