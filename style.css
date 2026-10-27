@@ -1132,6 +1132,13 @@ section.band {
   word-break: break-word;
 }
 
+/* six contact cards: two rows of three on wide screens */
+@media (min-width: 900px) {
+  .contact-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 /* Contact: message builder */
 
 .compose-card {
