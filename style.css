@@ -664,6 +664,16 @@ section {
   overflow-wrap: anywhere;
 }
 
+.taylor-formula {
+  margin-bottom: 8px;
+}
+
+.taylor-range {
+  margin: 0 0 16px;
+  font-size: 0.88rem;
+  color: var(--text-soft);
+}
+
 .legend {
   display: flex;
   flex-wrap: wrap;

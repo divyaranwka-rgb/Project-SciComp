@@ -149,12 +149,13 @@ document.addEventListener('DOMContentLoaded', function () {
     var countEl = document.getElementById('taylor-count');
     var degEl = document.getElementById('taylor-degree');
     var formulaEl = document.getElementById('taylor-formula');
+    var rangeEl = document.getElementById('taylor-range');
     var ctx = canvas.getContext('2d');
     var X0 = -10, X1 = 10, Y0 = -2.4, Y1 = 2.4; // x range narrows on small screens (see draw)
     var shown = Number(slider.value), from = shown, target = shown, animStart = 0;
 
     var fact = [1];
-    for (var i = 1; i <= 25; i++) fact[i] = fact[i - 1] * i;
+    for (var i = 1; i <= 45; i++) fact[i] = fact[i - 1] * i;
     var sup = { '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
     function toSup(n) { return String(n).split('').map(function (d) { return sup[d]; }).join(''); }
 
@@ -171,13 +172,29 @@ document.addEventListener('DOMContentLoaded', function () {
       return sum;
     }
 
+    function termText(k) {
+      var p = 2 * k + 1;
+      return (k % 2 ? ' − ' : ' + ') + 'x' + toSup(p) + '/' + p + '!';
+    }
+
+    // written out in full up to 6 terms; after that, first three terms … last term
     function formula(m) {
-      var out = 'sin x ≈ x';
-      for (var k = 1; k < m; k++) {
-        var p = 2 * k + 1;
-        out += (k % 2 ? ' − ' : ' + ') + 'x' + toSup(p) + '/' + p + '!';
+      var out = 'sin x ≈ x', k;
+      if (m <= 6) {
+        for (k = 1; k < m; k++) out += termText(k);
+      } else {
+        for (k = 1; k < 3; k++) out += termText(k);
+        out += ' ± …' + termText(m - 1);
       }
       return out;
+    }
+
+    // how far out the polynomial stays within 0.01 of sin x
+    function closeMatch(m) {
+      for (var x = 0; x < 40; x += 0.005) {
+        if (Math.abs(taylor(x, m) - Math.sin(x)) > 0.01) return x;
+      }
+      return 40;
     }
 
     function css(name) {
@@ -193,7 +210,8 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
-      var span = w < 500 ? 7 : 10;  // zoom in on phones so the curves aren't cramped
+      // -5π..5π on wider screens, -3π..3π on phones so the curves aren't cramped
+      var span = (w < 500 ? 3.25 : 5.25) * Math.PI;
       X0 = -span; X1 = span;
       var padB = 22;
       var sx = function (x) { return (x - X0) / (X1 - X0) * w; };
@@ -203,7 +221,8 @@ document.addEventListener('DOMContentLoaded', function () {
       // grid at multiples of pi and at integer y
       ctx.lineWidth = 1; ctx.strokeStyle = grid; ctx.fillStyle = soft;
       ctx.font = '12px system-ui, sans-serif'; ctx.textAlign = 'center';
-      for (var k = -3; k <= 3; k++) {
+      for (var k = -5; k <= 5; k++) {
+        if (Math.abs(k * Math.PI) > span) continue;
         var gx = sx(k * Math.PI);
         ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h - padB); ctx.stroke();
         var lbl = k === 0 ? '0' : (k === 1 ? 'π' : k === -1 ? '−π' : (k < 0 ? '−' : '') + Math.abs(k) + 'π');
@@ -243,6 +262,7 @@ document.addEventListener('DOMContentLoaded', function () {
       countEl.textContent = m;
       degEl.textContent = '(degree ' + (2 * m - 1) + ')';
       formulaEl.textContent = formula(m);
+      rangeEl.textContent = 'Matches sin x to within 0.01 for |x| < ' + (closeMatch(m) / Math.PI).toFixed(1) + 'π';
     }
 
     function animate(now) {

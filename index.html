@@ -17,7 +17,7 @@
     document.documentElement.setAttribute('data-theme', t);
   })();
 </script>
-<link rel="stylesheet" href="style.css?v=20261027f">
+<link rel="stylesheet" href="style.css?v=20261027g">
 </head>
 <body>
 
@@ -106,8 +106,9 @@
       <canvas id="taylor-canvas" role="img" aria-label="Graph of sin x and its Taylor polynomial approximation"></canvas>
       <div class="playground-controls">
         <label for="taylor-terms">Terms: <strong id="taylor-count">3</strong> <span class="muted" id="taylor-degree">(degree 5)</span></label>
-        <input type="range" id="taylor-terms" min="1" max="10" step="1" value="3">
+        <input type="range" id="taylor-terms" min="1" max="20" step="1" value="3">
         <p class="taylor-formula" id="taylor-formula" aria-live="polite"></p>
+        <p class="taylor-range" id="taylor-range"></p>
         <div class="legend">
           <span><i class="swatch swatch-sin"></i> sin x</span>
           <span><i class="swatch swatch-poly"></i> Taylor polynomial</span>
@@ -137,7 +138,7 @@
   </div>
 </footer>
 
-<script src="script.js?v=20261027f"></script>
+<script src="script.js?v=20261027g"></script>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
