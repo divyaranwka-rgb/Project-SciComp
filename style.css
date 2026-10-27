@@ -577,6 +577,14 @@ section {
   .caret { display: none; }
 }
 
+/* on phones the longer phrases wrap; reserve two lines so the page doesn't jump */
+@media (max-width: 480px) {
+  .rotator {
+    font-size: 1.15rem;
+    min-height: 3.2em;
+  }
+}
+
 .highlight-card {
   display: flex;
   flex-direction: column;
