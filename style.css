@@ -19,6 +19,62 @@
   --shadow: 0 10px 30px rgba(124, 58, 237, 0.12);
   --radius: 18px;
   --max-width: 1080px;
+
+  /* theme-dependent colours (light values) */
+  --accent: #7c3aed;           /* purple used for text, borders and icons */
+  --link: #ec4899;
+  --nav-bg: rgba(253, 252, 251, 0.9);
+  --chip-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  --ongoing-bg: #e6faf7;
+  --ongoing-text: #0f766e;
+  --note-bg: #fff7e6;
+  --note-text: #7a5c00;
+  --hero-glow: 0.15;
+  color-scheme: light;
+}
+
+/* Dark theme: used when the visitor picks it, or when their device prefers
+   dark and they haven't picked light. Keep both blocks in sync. */
+:root[data-theme="dark"] {
+  --bg: #13101b;
+  --bg-alt: #251d38;
+  --text: #ece8f6;
+  --text-soft: #a8a1bd;
+  --card-bg: #1c1727;
+  --border: #2f2742;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  --accent: #b69cff;
+  --link: #f472b6;
+  --nav-bg: rgba(19, 16, 27, 0.85);
+  --chip-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  --ongoing-bg: #0f3532;
+  --ongoing-text: #5eead4;
+  --note-bg: #3a2f0d;
+  --note-text: #fde68a;
+  --hero-glow: 0.22;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #13101b;
+    --bg-alt: #251d38;
+    --text: #ece8f6;
+    --text-soft: #a8a1bd;
+    --card-bg: #1c1727;
+    --border: #2f2742;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    --accent: #b69cff;
+    --link: #f472b6;
+    --nav-bg: rgba(19, 16, 27, 0.85);
+    --chip-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    --ongoing-bg: #0f3532;
+    --ongoing-text: #5eead4;
+    --note-bg: #3a2f0d;
+    --note-text: #fde68a;
+    --hero-glow: 0.22;
+    color-scheme: dark;
+  }
 }
 
 * {
@@ -35,6 +91,7 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 img, svg {
@@ -59,7 +116,7 @@ a {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(253, 252, 251, 0.9);
+  background: var(--nav-bg);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
 }
@@ -100,8 +157,53 @@ a {
 
 .nav-links a:hover,
 .nav-links a.active {
-  color: var(--purple);
+  color: var(--accent);
   border-color: var(--pink);
+}
+
+.logo {
+  margin-right: auto;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  margin-left: 22px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--accent);
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  transform: rotate(-15deg);
+  border-color: var(--accent);
+}
+
+.theme-toggle:focus-visible,
+.nav-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* show the moon in light mode (click -> dark) and the sun in dark mode */
+.theme-toggle .icon-sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .icon-sun { display: block; }
+  :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: none; }
 }
 
 .nav-toggle {
@@ -117,7 +219,7 @@ a {
 .nav-toggle span {
   width: 26px;
   height: 3px;
-  background: var(--purple);
+  background: var(--accent);
   border-radius: 2px;
 }
 
@@ -136,8 +238,11 @@ a {
   inset: -40% -10% auto -10%;
   height: 480px;
   background: var(--gradient);
-  opacity: 0.15;
+  opacity: var(--hero-glow);
   filter: blur(60px);
+  /* fade the glow out before the hero's bottom edge so it isn't cut off in a hard line */
+  -webkit-mask-image: linear-gradient(to bottom, #000 35%, transparent 85%);
+  mask-image: linear-gradient(to bottom, #000 35%, transparent 85%);
   z-index: -1;
   border-radius: 50%;
 }
@@ -147,7 +252,7 @@ a {
   padding: 6px 16px;
   border-radius: 999px;
   background: var(--bg-alt);
-  color: var(--purple);
+  color: var(--accent);
   font-weight: 700;
   font-size: 0.85rem;
   letter-spacing: 0.04em;
@@ -204,8 +309,8 @@ a {
 
 .btn-secondary {
   background: transparent;
-  color: var(--purple);
-  border-color: var(--purple);
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 .btn-secondary:hover {
@@ -247,7 +352,7 @@ section {
   border: 1px solid var(--border);
   font-weight: 600;
   font-size: 0.95rem;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+  box-shadow: var(--chip-shadow);
 }
 
 /* Highlight cards on home */
@@ -453,15 +558,15 @@ section {
   padding: 4px 10px;
   border-radius: 999px;
   background: var(--bg-alt);
-  color: var(--purple);
+  color: var(--accent);
 }
 
 .tag.ongoing {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #e6faf7;
-  color: #0f766e;
+  background: var(--ongoing-bg);
+  color: var(--ongoing-text);
 }
 
 .tag.ongoing::before {
@@ -474,15 +579,15 @@ section {
 
 .project-link {
   font-weight: 700;
-  color: var(--pink);
+  color: var(--link);
 }
 
 .placeholder-note {
-  background: #fff7e6;
+  background: var(--note-bg);
   border: 1px dashed var(--yellow);
   border-radius: var(--radius);
   padding: 18px 22px;
-  color: #7a5c00;
+  color: var(--note-text);
   font-size: 0.95rem;
   margin-bottom: 36px;
 }
@@ -547,6 +652,11 @@ footer {
 @media (max-width: 720px) {
   .nav-toggle {
     display: flex;
+  }
+
+  .theme-toggle {
+    margin-left: 0;
+    margin-right: 10px;
   }
 
   .nav-links {
