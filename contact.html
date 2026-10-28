@@ -4,7 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact — Divya Ranwka</title>
-<meta name="description" content="Get in touch with Divya Ranwka.">
+<meta name="description" content="Get in touch with Divya Ranwka by email, LinkedIn, GitHub or Codeforces.">
+<link rel="canonical" href="https://divyaranwka-rgb.github.io/Project-SciComp/contact.html">
+<meta name="theme-color" content="#fdfcfb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#13101b" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+<!-- link previews (LinkedIn, WhatsApp, X, Slack, etc.) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Divya Ranwka">
+<meta property="og:title" content="Contact — Divya Ranwka">
+<meta property="og:description" content="Get in touch with Divya Ranwka by email, LinkedIn, GitHub or Codeforces.">
+<meta property="og:url" content="https://divyaranwka-rgb.github.io/Project-SciComp/contact.html">
+<meta property="og:image" content="https://divyaranwka-rgb.github.io/Project-SciComp/images/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Divya Ranwka — Mathematics, IIT Madras">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Contact — Divya Ranwka">
+<meta name="twitter:description" content="Get in touch with Divya Ranwka by email, LinkedIn, GitHub or Codeforces.">
+<meta name="twitter:image" content="https://divyaranwka-rgb.github.io/Project-SciComp/images/og-card.jpg">
 <script>
   // apply the theme before the page draws, so there's no flash
   (function () {
@@ -15,9 +35,15 @@
       : mq('(prefers-contrast: more)') ? 'contrast'
       : mq('(prefers-color-scheme: dark)') ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', t);
+    // arm the scroll reveal early; a failsafe shows everything if the main script never runs
+    if ('IntersectionObserver' in window && !mq('(prefers-reduced-motion: reduce)')) {
+      document.documentElement.classList.add('reveal-ready');
+      setTimeout(function () { if (!window.__revealStarted) document.documentElement.classList.remove('reveal-ready'); }, 2500);
+    }
   })();
 </script>
-<link rel="stylesheet" href="style.css?v=20261028g">
+<link rel="stylesheet" href="vendor/katex/katex.min.css">
+<link rel="stylesheet" href="style.css?v=20261028h">
 </head>
 <body>
 <div class="backdrop" aria-hidden="true"><span class="bd-glow"></span><span class="bd-grid"></span><canvas class="bd-flow"></canvas><canvas class="bd-curve"></canvas></div>
@@ -155,11 +181,11 @@
 <footer>
   <div class="container">
     &copy; <span id="year"></span> Divya Ranwka. Built with HTML, CSS &amp; JS, hosted on GitHub Pages.
-    <span class="footer-note">Background: a live simulation of a pendulum's phase portrait (θ′ = ω, ω′ = −sin θ), with classic parametric curves traced alongside.</span>
+    <span class="footer-note">Background: a live simulation of a pendulum's phase portrait (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>θ</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo>=</mo><mi>ω</mi><mo separator="true">,</mo><mspace width="1em"/><msup><mi>ω</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo>=</mo><mo>−</mo><mi>sin</mi><mo>⁡</mo><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta&#x27; = \omega, \quad \omega&#x27; = -\sin\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7519em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7519em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9463em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">ω</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7519em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">sin</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span>), with classic parametric curves traced alongside.</span>
   </div>
 </footer>
 
-<script src="script.js?v=20261028g"></script>
+<script src="script.js?v=20261028h"></script>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>

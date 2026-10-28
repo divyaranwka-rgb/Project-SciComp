@@ -189,6 +189,25 @@ document.addEventListener('DOMContentLoaded', function () {
       return out;
     }
 
+    // typeset version: written in full up to 4 terms, then first three … last
+    function termTex(k) {
+      var p = 2 * k + 1;
+      return (k % 2 ? ' - ' : ' + ') + '\\dfrac{x^{' + p + '}}{' + p + '!}';
+    }
+
+    function formulaTex(m) {
+      var out = '\\sin x \\approx x', k;
+      if (m <= 4) {
+        for (k = 1; k < m; k++) out += termTex(k);
+      } else {
+        for (k = 1; k < 3; k++) out += termTex(k);
+        out += ' \\pm \\cdots' + termTex(m - 1);
+      }
+      return out;
+    }
+
+    function tex(src) { return katex.renderToString(src, { throwOnError: false }); }
+
     // how far out the polynomial stays within 0.01 of sin x
     function closeMatch(m) {
       for (var x = 0; x < 40; x += 0.005) {
@@ -261,8 +280,14 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateText(m) {
       countEl.textContent = m;
       degEl.textContent = '(degree ' + (2 * m - 1) + ')';
-      formulaEl.textContent = formula(m);
-      rangeEl.textContent = 'Matches sin x to within 0.01 for |x| < ' + (closeMatch(m) / Math.PI).toFixed(1) + 'π';
+      var reach = (closeMatch(m) / Math.PI).toFixed(1);
+      if (window.katex) {
+        katex.render(formulaTex(m), formulaEl, { throwOnError: false });
+        rangeEl.innerHTML = 'Matches ' + tex('\\sin x') + ' to within ' + tex('0.01') + ' for ' + tex('|x| < ' + reach + '\\pi');
+      } else {
+        formulaEl.textContent = formula(m);
+        rangeEl.textContent = 'Matches sin x to within 0.01 for |x| < ' + reach + 'π';
+      }
     }
 
     function animate(now) {
@@ -520,4 +545,36 @@ document.addEventListener('DOMContentLoaded', function () {
     new MutationObserver(function () { readColours(); start(); })
       .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   })();
+
+  // Navbar shadow once scrolled
+  var navbar = document.querySelector('.navbar');
+  if (navbar) {
+    var onScroll = function () { navbar.classList.toggle('scrolled', window.scrollY > 8); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  // Gentle scroll reveal (armed in <head>; skipped without IntersectionObserver or with reduced motion)
+  if (document.documentElement.classList.contains('reveal-ready')) {
+    window.__revealStarted = true;
+    var SEL = '.highlight-card, .project-card, .about-photo, .about-card, .skill-group, .course-card, .playground-card, .compose-card, .contact-card, .chip-grid, .section-title, .section-subtitle';
+    var GRID = '.highlight-card, .project-card, .about-card, .skill-group, .course-card, .contact-card';
+    var targets = document.querySelectorAll(SEL);
+    targets.forEach(function (el) {
+      var sibs = el.parentElement ? Array.prototype.filter.call(el.parentElement.children, function (c) { return c.matches(GRID); }) : [];
+      var idx = sibs.indexOf(el);
+      if (idx > 0) el.style.transitionDelay = Math.min(idx, 5) * 70 + 'ms';
+    });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var el = en.target;
+        el.classList.add('is-visible');
+        io.unobserve(el);
+        // once revealed, hand control back to the element's own hover transitions
+        setTimeout(function () { el.classList.add('reveal-done'); el.style.transitionDelay = ''; }, 1100);
+      });
+    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.06 });
+    targets.forEach(function (el) { io.observe(el); });
+  }
 });
