@@ -483,8 +483,6 @@ document.addEventListener('DOMContentLoaded', function () {
         cctx.fillStyle = link; cctx.beginPath();
         cctx.arc(box.cx + pe[0] * box.R, box.cy - pe[1] * box.R, 3, 0, TWO_PI); cctx.fill();
       }
-      cctx.fillStyle = soft; cctx.font = '12px system-ui, sans-serif'; cctx.textAlign = 'center';
-      cctx.fillText(CURVES[ci].name, box.cx, box.cy + box.R + 26);
       cctx.globalAlpha = 1;
     }
 
