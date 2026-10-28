@@ -1384,12 +1384,21 @@ section.band {
   background: color-mix(in srgb, var(--bg-alt) 72%, transparent);
 }
 
-:root[data-theme="contrast"] .backdrop {
+/* High contrast: simulations only, in dim grey, so text keeps 9:1 or better
+   even where a line passes directly underneath it */
+:root[data-theme="contrast"] {
+  --sim-stroke: #5c5c5c;
+  --curve-stroke: #6e6e6e;
+  --sim-opacity: 1;
+  --curve-opacity: 1;
+}
+
+:root[data-theme="contrast"] :is(.bd-glow, .bd-grid) {
   display: none;
 }
 
 :root[data-theme="contrast"] section.band {
-  background: #000;
+  background: transparent;
 }
 
 /* ---------- FOOTER ---------- */

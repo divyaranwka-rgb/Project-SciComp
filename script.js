@@ -352,8 +352,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function readColours() {
       var cs = getComputedStyle(document.documentElement);
-      accent = cs.getPropertyValue('--accent').trim() || accent;
-      link = cs.getPropertyValue('--link').trim() || link;
+      accent = cs.getPropertyValue('--sim-stroke').trim() || cs.getPropertyValue('--accent').trim() || accent;
+      link = cs.getPropertyValue('--curve-stroke').trim() || cs.getPropertyValue('--link').trim() || link;
       soft = cs.getPropertyValue('--text-soft').trim() || soft;
     }
 
