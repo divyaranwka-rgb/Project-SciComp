@@ -17,10 +17,10 @@
     document.documentElement.setAttribute('data-theme', t);
   })();
 </script>
-<link rel="stylesheet" href="style.css?v=20261028b">
+<link rel="stylesheet" href="style.css?v=20261028e">
 </head>
 <body>
-<div class="backdrop" aria-hidden="true"><span class="bd-glow"></span><span class="bd-grid"></span><span class="bd-math"></span></div>
+<div class="backdrop" aria-hidden="true"><span class="bd-glow"></span><span class="bd-grid"></span><canvas class="bd-flow"></canvas><canvas class="bd-curve"></canvas></div>
 
 <nav class="navbar">
   <div class="nav-inner">
@@ -136,10 +136,11 @@
 <footer>
   <div class="container">
     &copy; <span id="year"></span> Divya Ranwka. Built with HTML, CSS &amp; JS, hosted on GitHub Pages.
+    <span class="footer-note">Background: a live simulation of a pendulum's phase portrait (θ′ = ω, ω′ = −sin θ), with classic parametric curves traced alongside.</span>
   </div>
 </footer>
 
-<script src="script.js?v=20261028b"></script>
+<script src="script.js?v=20261028e"></script>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
