@@ -722,20 +722,6 @@ section {
   overflow-wrap: anywhere;
 }
 
-.taylor-formula {
-  margin-bottom: 8px;
-}
-
-.taylor-range .katex:last-child {
-  white-space: nowrap;
-}
-
-.taylor-range {
-  margin: 0 0 16px;
-  font-size: 0.88rem;
-  color: var(--text-soft);
-}
-
 .legend {
   display: flex;
   flex-wrap: wrap;
@@ -1504,17 +1490,7 @@ footer {
   font-size: 0.9rem;
 }
 
-.footer-note .katex {
-  font-size: 1.05em;
-}
 
-.footer-note {
-  display: block;
-  max-width: 640px;
-  margin: 8px auto 0;
-  font-size: 0.8rem;
-  opacity: 0.85;
-}
 
 /* ---------- RESPONSIVE ---------- */
 

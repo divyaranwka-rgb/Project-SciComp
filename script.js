@@ -149,7 +149,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var countEl = document.getElementById('taylor-count');
     var degEl = document.getElementById('taylor-degree');
     var formulaEl = document.getElementById('taylor-formula');
-    var rangeEl = document.getElementById('taylor-range');
     var ctx = canvas.getContext('2d');
     var X0 = -10, X1 = 10, Y0 = -2.4, Y1 = 2.4; // x range narrows on small screens (see draw)
     var shown = Number(slider.value), from = shown, target = shown, animStart = 0;
@@ -207,14 +206,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function tex(src) { return katex.renderToString(src, { throwOnError: false }); }
-
-    // how far out the polynomial stays within 0.01 of sin x
-    function closeMatch(m) {
-      for (var x = 0; x < 40; x += 0.005) {
-        if (Math.abs(taylor(x, m) - Math.sin(x)) > 0.01) return x;
-      }
-      return 40;
-    }
 
     function css(name) {
       return getComputedStyle(canvas).getPropertyValue(name).trim();
@@ -280,13 +271,10 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateText(m) {
       countEl.textContent = m;
       degEl.textContent = '(degree ' + (2 * m - 1) + ')';
-      var reach = (closeMatch(m) / Math.PI).toFixed(1);
       if (window.katex) {
         katex.render(formulaTex(m), formulaEl, { throwOnError: false });
-        rangeEl.innerHTML = 'Matches ' + tex('\\sin x') + ' to within ' + tex('0.01') + ' for ' + tex('|x| < ' + reach + '\\pi');
       } else {
         formulaEl.textContent = formula(m);
-        rangeEl.textContent = 'Matches sin x to within 0.01 for |x| < ' + reach + 'π';
       }
     }
 
