@@ -220,23 +220,27 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
-      // -5π..5π on wider screens, -3π..3π on phones so the curves aren't cramped
-      var span = (w < 500 ? 3.25 : 5.25) * Math.PI;
+      // always show -5π..5π
+      var span = 5.25 * Math.PI;
       X0 = -span; X1 = span;
       var padB = 22;
       var sx = function (x) { return (x - X0) / (X1 - X0) * w; };
       var sy = function (y) { return (Y1 - y) / (Y1 - Y0) * (h - padB); };
       var grid = css('--plot-grid') || css('--border'), soft = css('--text-soft'), accent = css('--accent');
 
-      // grid at multiples of pi and at integer y
+      // grid at multiples of pi and at integer y; on narrow screens use a smaller font and,
+      // if labels would still collide, label only 0, ±π, ±3π, ±5π
       ctx.lineWidth = 1; ctx.strokeStyle = grid; ctx.fillStyle = soft;
-      ctx.font = '12px system-ui, sans-serif'; ctx.textAlign = 'center';
+      ctx.font = (w < 500 ? '10px' : '12px') + ' system-ui, sans-serif'; ctx.textAlign = 'center';
+      var perPi = sx(Math.PI) - sx(0);
+      var allFit = perPi >= ctx.measureText('−5π').width + 6;
       for (var k = -5; k <= 5; k++) {
-        if (Math.abs(k * Math.PI) > span) continue;
         var gx = sx(k * Math.PI);
         ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h - padB); ctx.stroke();
+        if (!allFit && k !== 0 && k % 2 === 0) continue;
         var lbl = k === 0 ? '0' : (k === 1 ? 'π' : k === -1 ? '−π' : (k < 0 ? '−' : '') + Math.abs(k) + 'π');
-        ctx.fillText(lbl, gx, h - 6);
+        var half = ctx.measureText(lbl).width / 2 + 1;
+        ctx.fillText(lbl, Math.min(w - half, Math.max(half, gx)), h - 6);
       }
       for (var gy = -2; gy <= 2; gy++) {
         ctx.beginPath(); ctx.moveTo(0, sy(gy)); ctx.lineTo(w, sy(gy)); ctx.stroke();
