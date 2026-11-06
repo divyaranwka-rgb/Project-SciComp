@@ -1116,6 +1116,67 @@ main {
   font-size: 0.95rem;
 }
 
+
+/* ---------- Fourier drawing ---------- */
+
+#fourier-canvas {
+  display: block;
+  width: 100%;
+  height: 380px;
+}
+
+.fourier.drawing #fourier-canvas {
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.fourier-controls {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.6rem 1rem;
+  margin-top: 1rem;
+}
+
+.fourier-controls label {
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.fourier-controls input[type="range"] {
+  width: 100%;
+  accent-color: var(--red);
+  cursor: pointer;
+}
+
+.fourier-draw {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.fourier-draw:hover {
+  background: color-mix(in srgb, var(--ink) 86%, var(--paper));
+}
+
+.fourier-status {
+  grid-column: 1 / -1;
+  min-height: 1.5em;
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 720px) {
+  #fourier-canvas {
+    height: 300px;
+  }
+
+  .fourier-controls {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+}
+
 /* ---------- Hidden things ---------- */
 
 .toast {

@@ -43,7 +43,7 @@
   })();
 </script>
 <link rel="stylesheet" href="vendor/katex/katex.min.css">
-<link rel="stylesheet" href="style.css?v=20261106g">
+<link rel="stylesheet" href="style.css?v=20261106i">
 </head>
 <body>
 <div class="backdrop" aria-hidden="true"><span class="bd-grid"></span><canvas class="bd-flow"></canvas><canvas class="bd-curve"></canvas></div>
@@ -150,6 +150,22 @@
       </details>
     </div>
   </section>
+  <section class="sec">
+    <h2 class="sec-label">Draw anything</h2>
+    <div class="sec-body">
+      <p>Every closed curve is a sum of circles spinning at whole-number speeds: a Fourier series. Draw a shape in one stroke and watch the circles redraw it. Fewer circles give a rougher sketch.</p>
+      <div class="figure fourier" id="fourier">
+        <canvas id="fourier-canvas" role="img" aria-label="Rotating circles redrawing a shape"></canvas>
+        <div class="fourier-controls">
+          <label for="fourier-n">Circles: <strong id="fourier-count">60</strong></label>
+          <input type="range" id="fourier-n" min="1" max="400" value="60">
+          <button type="button" class="play-toggle" id="fourier-example">Heart</button>
+          <button type="button" class="play-toggle fourier-draw" id="fourier-draw">Draw your own</button>
+          <p class="fourier-status" aria-live="polite"></p>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer>
@@ -160,7 +176,7 @@
 </footer>
 
 <script src="vendor/katex/katex.min.js"></script>
-<script src="script.js?v=20261106g"></script>
+<script src="script.js?v=20261106i"></script>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>

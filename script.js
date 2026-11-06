@@ -789,6 +789,213 @@ document.addEventListener('DOMContentLoaded', function () {
     newGame(true);
   }
 
+  // Fourier drawing: a closed curve redrawn by rotating circles (epicycles).
+  var fBox = document.getElementById('fourier');
+  if (fBox) {
+    var fcv = document.getElementById('fourier-canvas'), fctx2 = fcv.getContext('2d');
+    var fSlider = document.getElementById('fourier-n'), fCount = document.getElementById('fourier-count');
+    var fStatus = fBox.querySelector('.fourier-status');
+    var fStill = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var FN = 400, FW = 0, FH = 0, coeffs = [], trail = [], ft = 0, fmode = 'play', stroke = [];
+    var fRaf = 0, fLast = 0, fInView = false, current = null, showingStill = false;
+
+    var col = function (v) { return getComputedStyle(fcv).getPropertyValue(v).trim(); };
+
+    function fResize() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      FW = fcv.clientWidth; FH = fcv.clientHeight;
+      fcv.width = Math.round(FW * dpr); fcv.height = Math.round(FH * dpr);
+      fctx2.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    // resample a polyline to FN points equally spaced along its length, closing the loop
+    function resample(pts) {
+      var p = pts.concat([pts[0]]), seg = [], total = 0, i;
+      for (i = 1; i < p.length; i++) { var d = Math.hypot(p[i][0] - p[i - 1][0], p[i][1] - p[i - 1][1]); seg.push(d); total += d; }
+      var out = [], acc = 0, j = 0;
+      for (i = 0; i < FN; i++) {
+        var target = i * total / FN;
+        while (j < seg.length - 1 && acc + seg[j] < target) { acc += seg[j]; j++; }
+        var f = seg[j] ? (target - acc) / seg[j] : 0;
+        out.push([p[j][0] + f * (p[j + 1][0] - p[j][0]), p[j][1] + f * (p[j + 1][1] - p[j][1])]);
+      }
+      return out;
+    }
+
+    // discrete Fourier transform, c_k = (1/N) sum z_n e^(-2 pi i k n / N); biggest circles first
+    function dft(z) {
+      var out = [];
+      for (var k = -FN / 2; k < FN / 2; k++) {
+        var re = 0, im = 0;
+        for (var n = 0; n < FN; n++) {
+          var a = -2 * Math.PI * k * n / FN, c = Math.cos(a), sn = Math.sin(a);
+          re += z[n][0] * c - z[n][1] * sn;
+          im += z[n][0] * sn + z[n][1] * c;
+        }
+        re /= FN; im /= FN;
+        out.push({ k: k, amp: Math.hypot(re, im), phase: Math.atan2(im, re) });
+      }
+      out.sort(function (a, b) { return a.k === 0 ? -1 : b.k === 0 ? 1 : b.amp - a.amp; });
+      return out;
+    }
+
+    function heart() {
+      var pts = [];
+      for (var i = 0; i < 600; i++) {
+        var a = i / 600 * 2 * Math.PI, sn = Math.sin(a);
+        pts.push([16 * sn * sn * sn, -(13 * Math.cos(a) - 5 * Math.cos(2 * a) - 2 * Math.cos(3 * a) - Math.cos(4 * a))]);
+      }
+      return pts;
+    }
+
+    function load(points, label) {
+      current = { points: points, label: label };
+      var xs = points.map(function (q) { return q[0]; }), ys = points.map(function (q) { return q[1]; });
+      var x0 = Math.min.apply(null, xs), x1 = Math.max.apply(null, xs), y0 = Math.min.apply(null, ys), y1 = Math.max.apply(null, ys);
+      var sc = Math.min(FW, FH) * 0.8 / (Math.max(x1 - x0, y1 - y0) || 1);
+      var z = resample(points).map(function (q) { return [(q[0] - (x0 + x1) / 2) * sc, (q[1] - (y0 + y1) / 2) * sc]; });
+      coeffs = dft(z);
+      trail = []; ft = 0; fmode = 'play';
+      fBox.classList.remove('drawing');
+      fStatus.textContent = label;
+      fStart();
+    }
+
+    function epicycles(time, count) {
+      var x = FW / 2, y = FH / 2, circles = [];
+      for (var i = 0; i < count; i++) {
+        var c = coeffs[i], a = c.k * time + c.phase;
+        var nx = x + c.amp * Math.cos(a), ny = y + c.amp * Math.sin(a);
+        if (c.k !== 0) circles.push([x, y, c.amp, nx, ny]);
+        x = nx; y = ny;
+      }
+      return { x: x, y: y, circles: circles };
+    }
+
+    function fRender(pen) {
+      fctx2.clearRect(0, 0, FW, FH);
+      var ink = col('--ink'), soft = col('--ink-soft'), red = col('--red');
+      if (pen) {
+        fctx2.globalAlpha = 0.25; fctx2.strokeStyle = ink; fctx2.lineWidth = 1;
+        pen.circles.forEach(function (c) { fctx2.beginPath(); fctx2.arc(c[0], c[1], c[2], 0, 2 * Math.PI); fctx2.stroke(); });
+        fctx2.globalAlpha = 0.75; fctx2.strokeStyle = soft; fctx2.lineWidth = 1.2; fctx2.beginPath();
+        pen.circles.forEach(function (c, i) { if (i === 0) fctx2.moveTo(c[0], c[1]); fctx2.lineTo(c[3], c[4]); });
+        fctx2.stroke(); fctx2.globalAlpha = 1;
+      }
+      fctx2.strokeStyle = red; fctx2.lineWidth = 2.5; fctx2.lineJoin = 'round'; fctx2.lineCap = 'round';
+      fctx2.beginPath();
+      trail.forEach(function (q, i) { if (i === 0) fctx2.moveTo(q[0], q[1]); else fctx2.lineTo(q[0], q[1]); });
+      fctx2.stroke();
+      if (pen) { fctx2.fillStyle = red; fctx2.beginPath(); fctx2.arc(pen.x, pen.y, 3.5, 0, 2 * Math.PI); fctx2.fill(); }
+    }
+
+    function fCountNow() { return Math.min(Number(fSlider.value), coeffs.length); }
+
+    function fStillFrame() {
+      showingStill = true;
+      trail = [];
+      for (var i = 0; i <= 600; i++) { var q = epicycles(i / 600 * 2 * Math.PI, fCountNow()); trail.push([q.x, q.y]); }
+      fRender(epicycles(0, fCountNow()));
+    }
+
+    function fFrame(now) {
+      fRaf = 0;
+      if (fmode !== 'play' || !fInView || document.hidden) return;
+      var dt = Math.min(0.05, (now - (fLast || now)) / 1000); fLast = now;
+      var pen = epicycles(ft, fCountNow());
+      trail.push([pen.x, pen.y]);
+      fRender(pen);
+      ft += dt * 0.55;                                   // one full drawing about every 11 seconds
+      if (ft > 2 * Math.PI + 0.05) { ft = 0; trail = []; }
+      fRaf = requestAnimationFrame(fFrame);
+    }
+
+    function fStart() {
+      if (fmode !== 'play' || !coeffs.length) return;
+      if (fStill) { fStillFrame(); return; }
+      if (!fInView) { if (!trail.length) fStillFrame(); return; }   // show something before it scrolls in
+      if (!fRaf) {
+        if (showingStill) { trail = []; ft = 0; showingStill = false; }   // start the animation from a clean page
+        fLast = 0; fRaf = requestAnimationFrame(fFrame);
+      }
+    }
+
+    fSlider.addEventListener('input', function () {
+      fCount.textContent = fSlider.value;
+      trail = []; ft = 0;
+      if (fmode === 'play' && (fStill || !fInView)) fStillFrame();
+    });
+
+    document.getElementById('fourier-example').addEventListener('click', function () {
+      load(heart(), 'A heart, redrawn by rotating circles.');
+    });
+
+    document.getElementById('fourier-draw').addEventListener('click', function () {
+      fmode = 'draw'; stroke = []; trail = [];
+      fBox.classList.add('drawing');
+      fctx2.clearRect(0, 0, FW, FH);
+      fStatus.textContent = 'Draw one continuous shape in the box. Let go to finish.';
+    });
+
+    var fPos = function (e) { var r = fcv.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+    fcv.addEventListener('pointerdown', function (e) {
+      if (fmode !== 'draw') return;
+      fmode = 'drawing'; stroke = [fPos(e)];
+      try { fcv.setPointerCapture(e.pointerId); } catch (err) {}
+      e.preventDefault();
+    });
+    fcv.addEventListener('pointermove', function (e) {
+      if (fmode !== 'drawing') return;
+      stroke.push(fPos(e));
+      fctx2.clearRect(0, 0, FW, FH);
+      fctx2.strokeStyle = col('--ink'); fctx2.lineWidth = 2.5; fctx2.lineCap = 'round'; fctx2.lineJoin = 'round';
+      fctx2.beginPath();
+      stroke.forEach(function (q, i) { if (i === 0) fctx2.moveTo(q[0], q[1]); else fctx2.lineTo(q[0], q[1]); });
+      fctx2.stroke();
+    });
+    var fEnd = function () {
+      if (fmode !== 'drawing') return;
+      if (stroke.length < 12) {
+        fmode = 'draw';
+        fStatus.textContent = 'That was a bit short. Try a bigger shape.';
+        return;
+      }
+      load(stroke, 'Your drawing, redrawn by rotating circles. Move the slider to sharpen or blur it.');
+    };
+    fcv.addEventListener('pointerup', fEnd);
+    fcv.addEventListener('pointercancel', fEnd);
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        fInView = entries[0].isIntersecting;
+        fStart();
+      }, { threshold: 0.35 }).observe(fBox);
+    } else {
+      fInView = true;
+    }
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) fStart(); });
+
+    var fResizeTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(fResizeTimer);
+      fResizeTimer = setTimeout(function () {
+        var w = fcv.clientWidth;
+        if (w === FW) return;                          // ignore phone address-bar height changes
+        fResize();
+        if (fmode === 'play' && current) load(current.points, current.label);
+      }, 150);
+    });
+    new MutationObserver(function () {
+      if (fmode !== 'play' || fRaf) return;            // a running animation picks up the new colours itself
+      if (fStill || showingStill) fStillFrame();
+      else fRender(epicycles(ft, fCountNow()));       // repaint the paused drawing as it was
+    })
+      .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    fResize();
+    load(heart(), 'A heart, redrawn by rotating circles. Press Draw your own to try your own shape.');
+  }
+
   // ---- Hidden things ----
   var eggStill = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
