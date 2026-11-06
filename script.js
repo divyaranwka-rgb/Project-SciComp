@@ -278,6 +278,55 @@ document.addEventListener('DOMContentLoaded', function () {
 
     updateText(target);
     draw(shown);
+
+    // Autoplay: once the graph scrolls into view it adds terms one by one up to 20,
+    // holds, then starts over. Touching the slider hands control to the visitor;
+    // the Play/Pause button resumes or stops it. Paused while off-screen.
+    var playBtn = document.getElementById('taylor-play');
+    var MAX = Number(slider.max);
+    var auto = !reduceMotion, inView = false, started = false, timer = 0;
+
+    function setTerms(n) {
+      slider.value = n;
+      slider.dispatchEvent(new Event('input'));
+    }
+
+    function schedule() {
+      clearTimeout(timer);
+      if (!auto || !inView || document.hidden) return;
+      var n = Number(slider.value);
+      var delay = n >= MAX ? 2400 : (n === 1 ? 1000 : 650);
+      timer = setTimeout(function () {
+        if (!auto || !inView) return;
+        setTerms(n >= MAX ? 1 : n + 1);
+        schedule();
+      }, delay);
+    }
+
+    function setAuto(on) {
+      auto = on;
+      if (playBtn) {
+        playBtn.textContent = on ? 'Pause' : 'Play';
+        playBtn.setAttribute('aria-label', on ? 'Pause the animation' : 'Play the animation');
+      }
+      if (on) schedule(); else clearTimeout(timer);
+    }
+
+    ['pointerdown', 'keydown', 'touchstart'].forEach(function (ev) {
+      slider.addEventListener(ev, function () { if (auto) setAuto(false); }, { passive: true });
+    });
+
+    if (playBtn) playBtn.addEventListener('click', function () { setAuto(!auto); });
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        inView = entries[0].isIntersecting;
+        if (inView && auto && !started) { started = true; setTerms(1); }
+        schedule();
+      }, { threshold: 0.45 }).observe(canvas.closest('.figure') || canvas);
+    }
+    document.addEventListener('visibilitychange', schedule);
+    setAuto(auto);
   }
 
   // Contact: message builder -> opens the visitor's email app with a prefilled message
@@ -512,4 +561,52 @@ document.addEventListener('DOMContentLoaded', function () {
       .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   })();
 
+
+  // Scroll reveal (armed in <head>, so nothing flashes): each section's rule is drawn
+  // across, its title slides in, and its contents settle in one line at a time.
+  if (document.documentElement.classList.contains('js-anim')) {
+    window.__animStarted = true;
+    var blocks = document.querySelectorAll('.home-intro, .opening, .sec');
+
+    var itemsOf = function (block) {
+      if (block.matches('.home-intro')) {
+        return Array.prototype.slice.call(block.querySelectorAll('h1, .affiliation, .text > p, .onward, .portrait'));
+      }
+      if (block.matches('.opening')) return Array.prototype.slice.call(block.children);
+      var out = [];
+      var label = block.querySelector(':scope > .sec-label');
+      if (label) out.push(label);
+      var body = block.querySelector(':scope > .sec-body');
+      if (body) {
+        Array.prototype.forEach.call(body.children, function (c) {
+          if (c.matches('ul, dl, form')) out.push.apply(out, c.children);
+          else out.push(c);
+        });
+      }
+      return out;
+    };
+
+    blocks.forEach(function (block) {
+      var step = 0;
+      block.__items = itemsOf(block);
+      block.__items.forEach(function (el) {
+        if (el.tagName !== 'DD') step++;              // a term and its description arrive together
+        el.style.transitionDelay = Math.min(step - 1, 9) * 75 + 'ms';
+      });
+    });
+
+    var revealer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        var block = en.target;
+        block.classList.add('in-view');
+        revealer.unobserve(block);
+        // once it has arrived, drop the stagger so hover effects respond immediately
+        setTimeout(function () {
+          (block.__items || []).forEach(function (el) { el.style.transitionDelay = ''; });
+        }, 1900);
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
+    blocks.forEach(function (b) { revealer.observe(b); });
+  }
 });

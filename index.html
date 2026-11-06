@@ -35,10 +35,15 @@
       : mq('(prefers-contrast: more)') ? 'contrast'
       : mq('(prefers-color-scheme: dark)') ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', t);
+    // arm the scroll reveal before first paint; a failsafe shows everything if the main script never runs
+    if ('IntersectionObserver' in window && !mq('(prefers-reduced-motion: reduce)')) {
+      document.documentElement.classList.add('js-anim');
+      setTimeout(function () { if (!window.__animStarted) document.documentElement.classList.remove('js-anim'); }, 2500);
+    }
   })();
 </script>
 <link rel="stylesheet" href="vendor/katex/katex.min.css">
-<link rel="stylesheet" href="style.css?v=20261106a">
+<link rel="stylesheet" href="style.css?v=20261106c">
 </head>
 <body>
 <div class="backdrop" aria-hidden="true"><span class="bd-grid"></span><canvas class="bd-flow"></canvas><canvas class="bd-curve"></canvas></div>
@@ -74,7 +79,7 @@
 <main class="wrap">
   <header class="home-intro">
     <div>
-      <h1>Divya Ranwka</h1>
+      <h1 class="signed">Divya Ranwka<svg class="pen-line" viewBox="0 0 600 30" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M6 19 C 90 11, 170 23, 270 16 S 470 9, 594 17"/></svg></h1>
       <p class="affiliation">Mathematics undergraduate at IIT Madras</p>
       <div class="text">
         <p>I study mathematics at IIT Madras, where I like proving things as much as building them, from first-principles calculus to machine-learning models. When I'm not at my desk, I'm chasing a good cover drive or a forehand down the line.</p>
@@ -106,6 +111,7 @@
         <div class="playground-controls">
           <label for="taylor-terms">Terms: <strong id="taylor-count">3</strong> <span class="muted" id="taylor-degree">(degree 5)</span></label>
           <input type="range" id="taylor-terms" min="1" max="20" step="1" value="3">
+          <button type="button" class="play-toggle" id="taylor-play" aria-label="Pause the animation">Pause</button>
           <p class="taylor-formula" id="taylor-formula" aria-live="polite"></p>
           <div class="legend">
             <span><i class="swatch swatch-sin"></i> sin x</span>
@@ -130,7 +136,7 @@
 </footer>
 
 <script src="vendor/katex/katex.min.js"></script>
-<script src="script.js?v=20261106a"></script>
+<script src="script.js?v=20261106c"></script>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>

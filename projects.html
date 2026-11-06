@@ -35,9 +35,14 @@
       : mq('(prefers-contrast: more)') ? 'contrast'
       : mq('(prefers-color-scheme: dark)') ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', t);
+    // arm the scroll reveal before first paint; a failsafe shows everything if the main script never runs
+    if ('IntersectionObserver' in window && !mq('(prefers-reduced-motion: reduce)')) {
+      document.documentElement.classList.add('js-anim');
+      setTimeout(function () { if (!window.__animStarted) document.documentElement.classList.remove('js-anim'); }, 2500);
+    }
   })();
 </script>
-<link rel="stylesheet" href="style.css?v=20261106a">
+<link rel="stylesheet" href="style.css?v=20261106c">
 </head>
 <body>
 <div class="backdrop" aria-hidden="true"><span class="bd-grid"></span><canvas class="bd-flow"></canvas><canvas class="bd-curve"></canvas></div>
@@ -111,7 +116,7 @@
   </div>
 </footer>
 
-<script src="script.js?v=20261106a"></script>
+<script src="script.js?v=20261106c"></script>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
