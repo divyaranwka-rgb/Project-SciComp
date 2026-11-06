@@ -609,4 +609,271 @@ document.addEventListener('DOMContentLoaded', function () {
     }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
     blocks.forEach(function (b) { revealer.observe(b); });
   }
+
+  // Nim: the visitor against the perfect (nim-sum) strategy.
+  var nimBox = document.getElementById('nim');
+  if (nimBox) {
+    var rowsEl = nimBox.querySelector('.nim-rows');
+    var statusEl = nimBox.querySelector('.nim-status');
+    var youEl = document.getElementById('nim-you'), meEl = document.getElementById('nim-me');
+    var xorEl = document.getElementById('nim-xor'), verdictEl = document.getElementById('nim-verdict');
+    var nimStill = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var rows = [1, 3, 5, 7], busy = false, over = false, score = { you: 0, me: 0 }, tilt = [];
+
+    try {
+      var saved = JSON.parse(localStorage.getItem('nim-score') || 'null');
+      if (saved && typeof saved.you === 'number') score = saved;
+    } catch (e) {}
+
+    var nimSum = function (r) { return r.reduce(function (a, b) { return a ^ b; }, 0); };
+
+    // a slightly different hand-drawn tilt and length for every stick
+    function shuffleTilt() {
+      tilt = rows.map(function (n) {
+        var out = [];
+        for (var i = 0; i < 9; i++) out.push([(Math.random() * 6 - 3).toFixed(1), (Math.random() * 0.35 - 0.15).toFixed(2)]);
+        return out;
+      });
+    }
+
+    function bestMove(r) {
+      var s = nimSum(r), i;
+      if (s !== 0) {
+        for (i = 0; i < r.length; i++) {
+          var target = r[i] ^ s;
+          if (target < r[i]) return { row: i, take: r[i] - target };
+        }
+      }
+      // losing position: take one from the largest row and hope for a slip
+      var big = 0;
+      for (i = 1; i < r.length; i++) if (r[i] > r[big]) big = i;
+      return { row: big, take: 1 };
+    }
+
+    function render() {
+      rowsEl.innerHTML = '';
+      rows.forEach(function (n, r) {
+        var row = document.createElement('div');
+        row.className = 'nim-row';
+        var lab = document.createElement('span');
+        lab.className = 'nim-row-label';
+        lab.textContent = n;
+        lab.setAttribute('aria-hidden', 'true');
+        row.appendChild(lab);
+        for (var j = 0; j < n; j++) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'stick';
+          b.dataset.row = r; b.dataset.index = j;
+          var take = n - j;
+          b.setAttribute('aria-label', 'Row ' + (r + 1) + ': take ' + take + (take === 1 ? ' stick' : ' sticks'));
+          b.style.setProperty('--tilt', tilt[r][j][0] + 'deg');
+          b.style.setProperty('--len', tilt[r][j][1]);
+          b.disabled = busy || over;
+          row.appendChild(b);
+        }
+        rowsEl.appendChild(row);
+      });
+      youEl.textContent = score.you; meEl.textContent = score.me;
+      renderXor();
+    }
+
+    function renderXor() {
+      var width = Math.max(3, Math.max.apply(null, rows.concat([1])).toString(2).length);
+      var bin = function (n) { var b = n.toString(2); while (b.length < width) b = '0' + b; return b; };
+      var s = nimSum(rows);
+      var lines = rows.map(function (n) { return n + ' & \\qquad \\texttt{' + bin(n) + '}'; }).join(' \\\\ ');
+      var tex = '\\begin{array}{rr} ' + lines + ' \\\\ \\hline \\text{nim-sum} & \\qquad \\texttt{' + bin(s) + '} \\end{array}';
+      if (window.katex) katex.render(tex, xorEl, { throwOnError: false, displayMode: true });
+      else xorEl.textContent = rows.join(' xor ') + ' = ' + s;
+      if (rows.every(function (n) { return n === 0; })) { verdictEl.textContent = ''; return; }
+      verdictEl.textContent = s === 0
+        ? 'Right now the nim-sum is 0, so whoever moves next loses against perfect play.'
+        : 'Right now the nim-sum is ' + s + ', so whoever moves next can win with the right move.';
+    }
+
+    function mark(r, from, cls) {
+      rowsEl.querySelectorAll('.stick').forEach(function (b) {
+        var on = Number(b.dataset.row) === r && Number(b.dataset.index) >= from;
+        b.classList.toggle(cls, on);
+      });
+    }
+
+    function clearMarks() {
+      rowsEl.querySelectorAll('.stick.will-take').forEach(function (b) { b.classList.remove('will-take'); });
+    }
+
+    function take(r, count, done) {
+      var from = rows[r] - count;
+      mark(r, from, 'taking');
+      setTimeout(function () {
+        rows[r] -= count;
+        render();
+        done();
+      }, nimStill ? 0 : 420);
+    }
+
+    function finish(winner) {
+      over = true;
+      score[winner] += 1;
+      try { localStorage.setItem('nim-score', JSON.stringify(score)); } catch (e) {}
+      statusEl.textContent = winner === 'you'
+        ? 'You took the last stick. You win! Press New game for a rematch.'
+        : 'I took the last stick, so I win this one. Press New game to try again.';
+      nimBox.classList.toggle('won', winner === 'you');
+      render();
+    }
+
+    function computerTurn() {
+      busy = true; render();
+      statusEl.textContent = 'My move…';
+      setTimeout(function () {
+        var m = bestMove(rows);
+        mark(m.row, rows[m.row] - m.take, 'will-take');
+        setTimeout(function () {
+          take(m.row, m.take, function () {
+            busy = false;
+            if (nimSum(rows) === 0 && rows.every(function (n) { return n === 0; })) { finish('me'); return; }
+            render();
+            statusEl.textContent = 'I took ' + m.take + ' from row ' + (m.row + 1) + '. Your move.';
+          });
+        }, nimStill ? 0 : 550);
+      }, nimStill ? 150 : 700);
+    }
+
+    rowsEl.addEventListener('click', function (e) {
+      var b = e.target.closest('.stick');
+      if (!b || busy || over) return;
+      var r = Number(b.dataset.row), j = Number(b.dataset.index), count = rows[r] - j;
+      busy = true;
+      clearMarks();
+      rowsEl.querySelectorAll('.stick').forEach(function (s) { s.disabled = true; });
+      statusEl.textContent = 'You took ' + count + ' from row ' + (r + 1) + '.';
+      take(r, count, function () {
+        busy = false;
+        if (rows.every(function (n) { return n === 0; })) { finish('you'); return; }
+        computerTurn();
+      });
+    });
+
+    // preview the move: hovering or focusing a stick marks it and everything to its right
+    var preview = function (e) {
+      var b = e.target.closest && e.target.closest('.stick');
+      clearMarks();
+      if (b && !busy && !over) mark(Number(b.dataset.row), Number(b.dataset.index), 'will-take');
+    };
+    rowsEl.addEventListener('mouseover', preview);
+    rowsEl.addEventListener('focusin', preview);
+    rowsEl.addEventListener('mouseleave', clearMarks);
+    rowsEl.addEventListener('focusout', function () { setTimeout(function () { if (!rowsEl.contains(document.activeElement)) clearMarks(); }, 0); });
+
+    function newGame(classic) {
+      if (classic) {
+        rows = [1, 3, 5, 7];
+      } else {
+        // a fresh deal you can win, if you know the trick
+        do {
+          var count = 3 + Math.floor(Math.random() * 2);
+          rows = [];
+          for (var i = 0; i < count; i++) rows.push(1 + Math.floor(Math.random() * 7));
+        } while (nimSum(rows) === 0);
+      }
+      over = false; busy = false;
+      nimBox.classList.remove('won');
+      shuffleTilt();
+      statusEl.textContent = 'Your move. Click a stick to take it and every stick to its right.';
+      render();
+    }
+
+    document.getElementById('nim-new').addEventListener('click', function () { newGame(false); });
+    newGame(true);
+  }
+
+  // ---- Hidden things ----
+  var eggStill = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function toast(msg) {
+    var el = document.querySelector('.toast');
+    if (!el) {
+      el = document.createElement('div');
+      el.className = 'toast';
+      el.setAttribute('role', 'status');
+      document.body.appendChild(el);
+    }
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(el.__t);
+    el.__t = setTimeout(function () { el.classList.remove('show'); }, 2600);
+  }
+
+  // 1. Type "pi" anywhere (outside form fields) to switch between paper and blackboard.
+  var typed = '';
+  document.addEventListener('keydown', function (e) {
+    var tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.key === 'π') typed = 'pi';
+    else if (e.key && e.key.length === 1) typed = (typed + e.key.toLowerCase()).slice(-2);
+    if (typed !== 'pi') return;
+    typed = '';
+    var theme = document.documentElement.getAttribute('data-theme');
+    if (theme === 'contrast') { toast('π noticed. Staying in high contrast.'); return; }
+    var next = theme === 'dark' ? 'light' : 'dark';
+    var choice = document.querySelector('[data-theme-choice="' + next + '"]');
+    if (choice) {
+      choice.click();
+      var menu = document.querySelector('.theme-menu');
+      if (menu) menu.hidden = true;
+      if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+    }
+    toast(next === 'dark' ? 'π: to the blackboard.' : 'π: back to paper.');
+  });
+
+  // 2. The little sine in the footer sends a wave across the page.
+  var waveBtn = document.querySelector('.wave-egg');
+  if (waveBtn) {
+    waveBtn.addEventListener('click', function () {
+      var W = window.innerWidth, H = window.innerHeight;
+      var y0 = H * (0.3 + Math.random() * 0.4), amp = 26, lambda = 160;
+      var d = 'M0 ' + y0.toFixed(1);
+      for (var x = 4; x <= W; x += 4) d += ' L' + x + ' ' + (y0 - amp * Math.sin(2 * Math.PI * x / lambda)).toFixed(1);
+      var ns = 'http://www.w3.org/2000/svg';
+      var svg = document.createElementNS(ns, 'svg');
+      svg.setAttribute('class', 'wave-overlay');
+      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+      svg.setAttribute('aria-hidden', 'true');
+      var path = document.createElementNS(ns, 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('pathLength', '1');
+      svg.appendChild(path);
+      document.body.appendChild(svg);
+      if (!eggStill) {
+        path.getBoundingClientRect();
+        svg.classList.add('go');
+      } else {
+        svg.classList.add('static');
+      }
+      setTimeout(function () { svg.classList.add('fade'); }, eggStill ? 900 : 1500);
+      setTimeout(function () { svg.remove(); }, eggStill ? 1700 : 2400);
+    });
+  }
+
+  // 3. Click the red-pen line under the name and it is drawn again.
+  var signed = document.querySelector('.signed');
+  if (signed && !eggStill) {
+    signed.addEventListener('click', function () {
+      var p = signed.querySelector('.pen-line path');
+      if (!p) return;
+      p.style.transition = 'none';
+      p.style.strokeDashoffset = '1';
+      p.getBoundingClientRect();
+      p.style.transition = 'stroke-dashoffset 0.9s cubic-bezier(0.6, 0, 0.3, 1)';
+      p.style.strokeDashoffset = '0';
+    });
+  }
+
+  // 4. A note for anyone who opens the console.
+  try {
+    console.log('%cHello, fellow tinkerer.', 'font: 600 15px Georgia, serif; color: #b3312a');
+    console.log('A small one for you: what is the last digit of 7^2026?\nSend your answer from the contact page.');
+  } catch (e) {}
 });

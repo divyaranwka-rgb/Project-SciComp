@@ -955,6 +955,242 @@ main {
   color: var(--ink-soft);
 }
 
+
+/* ---------- Nim ---------- */
+
+.nim-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: 0.6rem 0.25rem 1.1rem;
+}
+
+.nim-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 3.3rem;
+}
+
+.nim-row-label {
+  width: 1.6rem;
+  margin-right: 0.75rem;
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+  text-align: right;
+}
+
+.stick {
+  position: relative;
+  width: 1.5rem;
+  height: 3.2rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform 0.18s ease;
+}
+
+/* the stick */
+.stick::before {
+  content: "";
+  position: absolute;
+  left: calc(50% - 2px);
+  top: 0.55rem;
+  bottom: 0.15rem;
+  width: 4px;
+  border-radius: 2px;
+  background: var(--ink);
+  transform: scaleY(calc(1 + var(--len, 0)));
+  transform-origin: bottom center;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+}
+
+/* its red head */
+.stick::after {
+  content: "";
+  position: absolute;
+  left: calc(50% - 4.5px);
+  top: 0.2rem;
+  width: 9px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--red);
+}
+
+.stick:disabled {
+  cursor: default;
+}
+
+.stick.will-take {
+  transform: rotate(var(--tilt, 0deg)) translateY(-4px);
+}
+
+.stick.will-take::before {
+  background: var(--red);
+  opacity: 0.6;
+}
+
+.stick.taking {
+  animation: stick-away 0.42s ease forwards;
+}
+
+@keyframes stick-away {
+  to {
+    opacity: 0;
+    transform: rotate(calc(var(--tilt, 0deg) + 28deg)) translateY(-16px);
+  }
+}
+
+.nim-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1.25rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+}
+
+.nim-status {
+  flex: 1 1 18rem;
+  margin: 0;
+}
+
+.nim.won .nim-status {
+  color: var(--red);
+  font-weight: 500;
+}
+
+.nim-score {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+.nim-score strong {
+  color: var(--ink);
+}
+
+.nim-secret {
+  margin-top: 1.25rem;
+}
+
+.nim-secret summary {
+  width: fit-content;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--link);
+  text-underline-offset: 0.2em;
+}
+
+.nim-secret summary:hover {
+  color: var(--link);
+}
+
+.nim-secret-body {
+  padding-top: 0.9rem;
+}
+
+.nim-secret-body > p {
+  color: var(--ink-soft);
+}
+
+.nim-xor .katex-display {
+  margin: 0.4rem 0 0.8rem;
+  text-align: left;
+}
+
+.nim-xor .katex-display > .katex {
+  text-align: left;
+}
+
+.nim-secret .op {
+  font-family: var(--font-head);
+  font-size: 1.1em;
+}
+
+.nim-verdict {
+  font-size: 0.95rem;
+}
+
+/* ---------- Hidden things ---------- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  z-index: 100;
+  padding: 0.55rem 1rem;
+  border-radius: 3px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.92rem;
+  opacity: 0;
+  translate: -50% 12px;
+  pointer-events: none;
+  transition: opacity 0.25s ease, translate 0.25s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+.wave-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  transition: opacity 0.8s ease;
+}
+
+.wave-overlay path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.wave-overlay.go path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1.4s cubic-bezier(0.45, 0, 0.3, 1);
+}
+
+.wave-overlay.static path {
+  stroke-dashoffset: 0;
+}
+
+.wave-overlay.fade {
+  opacity: 0;
+}
+
+.footer-hint {
+  white-space: nowrap;
+}
+
+.wave-egg {
+  padding: 0 0.25rem;
+  border: 0;
+  background: none;
+  color: var(--red);
+  font: inherit;
+  font-size: 1.2rem;
+  line-height: 1;
+  vertical-align: -0.1em;
+  cursor: pointer;
+}
+
+.wave-egg:hover {
+  translate: 0 -2px;
+}
+
 /* ---------- Footer ---------- */
 
 footer {
@@ -964,6 +1200,10 @@ footer {
 }
 
 footer .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.4rem 2rem;
   padding-top: 1.6rem;
   padding-bottom: 2.4rem;
   font-size: 0.88rem;

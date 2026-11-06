@@ -43,7 +43,7 @@
   })();
 </script>
 <link rel="stylesheet" href="vendor/katex/katex.min.css">
-<link rel="stylesheet" href="style.css?v=20261106e">
+<link rel="stylesheet" href="style.css?v=20261106g">
 </head>
 <body>
 <div class="backdrop" aria-hidden="true"><span class="bd-grid"></span><canvas class="bd-flow"></canvas><canvas class="bd-curve"></canvas></div>
@@ -127,16 +127,40 @@
       </div>
     </div>
   </section>
+  <section class="sec">
+    <h2 class="sec-label">Beat me at Nim</h2>
+    <div class="sec-body">
+      <p>We take turns removing matchsticks. On your turn, pick one row and take as many sticks from it as you like. Whoever takes the last stick wins. You go first.</p>
+      <div class="figure nim" id="nim">
+        <div class="nim-rows" role="group" aria-label="Matchsticks"></div>
+        <div class="nim-bar">
+          <p class="nim-status" aria-live="polite">Your move. Click a stick to take it and every stick to its right.</p>
+          <p class="nim-score">You <strong id="nim-you">0</strong>, me <strong id="nim-me">0</strong></p>
+          <button type="button" class="play-toggle" id="nim-new">New game</button>
+        </div>
+      </div>
+      <details class="nim-secret">
+        <summary>How does it keep winning?</summary>
+        <div class="nim-secret-body">
+          <p>Write each row's size in binary and add the columns without carrying. That operation is called XOR, written <span class="op">&oplus;</span>, and the result is the <em>nim-sum</em>.</p>
+          <p>If the nim-sum is 0, the player about to move is lost: whatever they take, the other player can make it 0 again, and the empty board has nim-sum 0. If it isn't 0, there is always a move that makes it 0. I always make that move. Charles Bouton worked this out in 1901.</p>
+          <div class="nim-xor" id="nim-xor" aria-live="polite"></div>
+          <p class="nim-verdict" id="nim-verdict"></p>
+        </div>
+      </details>
+    </div>
+  </section>
 </main>
 
 <footer>
   <div class="wrap">
-    &copy; <span id="year"></span> Divya Ranwka. Built with HTML, CSS &amp; JS, hosted on GitHub Pages.
+    <span>&copy; <span id="year"></span> Divya Ranwka. Built with HTML, CSS &amp; JS, hosted on GitHub Pages.</span>
+    <span class="footer-hint">A few things on this site are hidden. <button type="button" class="wave-egg" aria-label="Send a wave across the page" title="Go on, click it">∿</button></span>
   </div>
 </footer>
 
 <script src="vendor/katex/katex.min.js"></script>
-<script src="script.js?v=20261106e"></script>
+<script src="script.js?v=20261106g"></script>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
