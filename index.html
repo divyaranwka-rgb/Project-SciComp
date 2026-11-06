@@ -6,8 +6,8 @@
 <title>Divya Ranwka</title>
 <meta name="description" content="Divya Ranwka — mathematics student at IIT Madras. Projects, coursework, competitive programming and an interactive Taylor-series playground.">
 <link rel="canonical" href="https://divyaranwka-rgb.github.io/Project-SciComp/">
-<meta name="theme-color" content="#fdfcfb" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#13101b" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f9faf7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2a26" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
@@ -35,18 +35,13 @@
       : mq('(prefers-contrast: more)') ? 'contrast'
       : mq('(prefers-color-scheme: dark)') ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', t);
-    // arm the scroll reveal early; a failsafe shows everything if the main script never runs
-    if ('IntersectionObserver' in window && !mq('(prefers-reduced-motion: reduce)')) {
-      document.documentElement.classList.add('reveal-ready');
-      setTimeout(function () { if (!window.__revealStarted) document.documentElement.classList.remove('reveal-ready'); }, 2500);
-    }
   })();
 </script>
 <link rel="stylesheet" href="vendor/katex/katex.min.css">
-<link rel="stylesheet" href="style.css?v=20261031a">
+<link rel="stylesheet" href="style.css?v=20261106a">
 </head>
 <body>
-<div class="backdrop" aria-hidden="true"><span class="bd-glow"></span><span class="bd-grid"></span><canvas class="bd-flow"></canvas><canvas class="bd-curve"></canvas></div>
+<div class="backdrop" aria-hidden="true"><span class="bd-grid"></span><canvas class="bd-flow"></canvas><canvas class="bd-curve"></canvas></div>
 
 <nav class="navbar">
   <div class="nav-inner">
@@ -76,96 +71,66 @@
   </div>
 </nav>
 
-<header class="hero">
-  <div class="container">
-    <div class="hero-avatar">
-      <img src="images/headshot.jpg" width="416" height="416" alt="Headshot">
+<main class="wrap">
+  <header class="home-intro">
+    <div>
+      <h1>Divya Ranwka</h1>
+      <p class="affiliation">Mathematics undergraduate at IIT Madras</p>
+      <div class="text">
+        <p>I study mathematics at IIT Madras, where I like proving things as much as building them, from first-principles calculus to machine-learning models. When I'm not at my desk, I'm chasing a good cover drive or a forehand down the line.</p>
+        <p>Most days I'm thinking about problem solving, competitive programming, machine learning and artificial intelligence. On the other days, it's cricket and F1.</p>
+      </div>
+      <p class="onward"><a href="projects.html">See what I've built</a> <a href="contact.html">Write to me</a></p>
     </div>
-    <span class="eyebrow">Mathematics · IIT Madras</span>
-    <h1>Hi, I'm <span class="highlight">Divya Ranwka</span> 👋</h1>
-    <p class="rotator">
-      <span class="sr-only">I'm into problem solving, competitive programming, machine learning, artificial intelligence, and cricket &amp; F1.</span>
-      <span aria-hidden="true">I'm into <span class="rotator-word" data-words="problem solving|competitive programming|machine learning|artificial intelligence|cricket &amp; F1">problem solving</span><span class="caret"></span></span>
-    </p>
-    <p class="tagline">I study mathematics at IIT Madras, where I like proving things as much as building them, from first-principles calculus to machine-learning models. When I'm not at my desk, I'm chasing a good cover drive or a forehand down the line.</p>
-    <div class="cta-row">
-      <a href="projects.html" class="btn btn-primary">View My Projects</a>
-      <a href="contact.html" class="btn btn-secondary">Get In Touch</a>
-    </div>
-  </div>
-</header>
+    <figure class="portrait">
+      <img src="images/headshot.jpg" width="416" height="416" alt="Portrait of Divya Ranwka">
+    </figure>
+  </header>
 
-<section>
-  <div class="container">
-    <h2 class="section-title center">What I'm Up To</h2>
-    <p class="section-subtitle center">A snapshot of what's keeping me busy this semester.</p>
-    <div class="highlight-grid">
-      <div class="highlight-card">
-        <div class="emoji">📐</div>
-        <span class="card-label">Studying</span>
-        <h3>Calculus, built from scratch</h3>
-        <p>A proof-based course that starts from the real numbers themselves, alongside linear algebra and scientific computing.</p>
-        <a class="card-link" href="about.html#coursework">See my coursework →</a>
-      </div>
-      <div class="highlight-card">
-        <div class="emoji">🏆</div>
-        <span class="card-label">Practising</span>
-        <h3>Competitive programming</h3>
-        <p>Solving algorithmic problems in C++ on Codeforces to sharpen my algorithms and data structures.</p>
-        <a class="card-link" href="https://codeforces.com/profile/Uncomplecable" target="_blank" rel="noopener">My Codeforces profile →</a>
-      </div>
-      <div class="highlight-card">
-        <div class="emoji">🫁</div>
-        <span class="card-label">Latest project</span>
-        <h3>Lung cancer risk model</h3>
-        <p>A logistic regression model that classifies lung cancer risk from lifestyle and clinical factors, built end to end in Python.</p>
-        <a class="card-link" href="projects.html">View my projects →</a>
-      </div>
+  <section class="sec">
+    <h2 class="sec-label">This semester</h2>
+    <div class="sec-body">
+      <ul class="runin">
+        <li><strong>Studying.</strong> Calculus built from scratch, in a proof-based course that starts from the real numbers themselves, alongside linear algebra and scientific computing. <a href="about.html#coursework">See my coursework</a>.</li>
+        <li><strong>Practising.</strong> Competitive programming in C++ on Codeforces, to sharpen my algorithms and data structures. <a href="https://codeforces.com/profile/Uncomplecable" target="_blank" rel="noopener">My Codeforces profile</a>.</li>
+        <li><strong>Latest project.</strong> A logistic regression model that classifies lung cancer risk from lifestyle and clinical factors, built end to end in Python. <a href="projects.html">More on my projects</a>.</li>
+      </ul>
     </div>
-  </div>
-</section>
-
-<section class="band" id="playground">
-  <div class="container">
-    <h2 class="section-title center">∑ Maths Playground</h2>
-    <p class="section-subtitle center">Can a polynomial pretend to be a sine wave? Add terms of its Taylor series and watch the approximation hug <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>sin</mi><mo>⁡</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">\sin x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6679em;"></span><span class="mop">sin</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">x</span></span></span></span> further and further from zero.</p>
-    <div class="playground-card">
-      <canvas id="taylor-canvas" role="img" aria-label="Graph of sin x and its Taylor polynomial approximation"></canvas>
-      <div class="playground-controls">
-        <label for="taylor-terms">Terms: <strong id="taylor-count">3</strong> <span class="muted" id="taylor-degree">(degree 5)</span></label>
-        <input type="range" id="taylor-terms" min="1" max="20" step="1" value="3">
-        <p class="taylor-formula" id="taylor-formula" aria-live="polite"></p>
-        <div class="legend">
-          <span><i class="swatch swatch-sin"></i> sin x</span>
-          <span><i class="swatch swatch-poly"></i> Taylor polynomial</span>
+  </section>
+  <section class="sec">
+    <h2 class="sec-label">Playground</h2>
+    <div class="sec-body">
+      <p>Can a polynomial pretend to be a sine wave? Add terms of its Taylor series and watch the approximation hug <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>sin</mi><mo>⁡</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">\sin x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6679em;"></span><span class="mop">sin</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">x</span></span></span></span> further and further from zero.</p>
+      <div class="figure playground-card" id="playground">
+        <canvas id="taylor-canvas" role="img" aria-label="Graph of sin x and its Taylor polynomial approximation"></canvas>
+        <div class="playground-controls">
+          <label for="taylor-terms">Terms: <strong id="taylor-count">3</strong> <span class="muted" id="taylor-degree">(degree 5)</span></label>
+          <input type="range" id="taylor-terms" min="1" max="20" step="1" value="3">
+          <p class="taylor-formula" id="taylor-formula" aria-live="polite"></p>
+          <div class="legend">
+            <span><i class="swatch swatch-sin"></i> sin x</span>
+            <span><i class="swatch swatch-poly"></i> Taylor polynomial</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<section>
-  <div class="container">
-    <h2 class="section-title center">Off the Clock</h2>
-    <p class="section-subtitle center">If there's a scoreboard or a racetrack, I'm probably watching or playing.</p>
-    <div class="chip-grid">
-      <span class="chip">🏏 Cricket</span>
-      <span class="chip">🎾 Tennis &amp; Racket Sports</span>
-      <span class="chip">⚽ Football</span>
-      <span class="chip">🏎️ Formula 1</span>
-      <span class="chip">🎵 Boy Bands &amp; Pop</span>
+  </section>
+  <section class="sec">
+    <h2 class="sec-label">Off the clock</h2>
+    <div class="sec-body">
+      <p>If there's a scoreboard or a racetrack, I'm probably watching or playing: cricket, tennis and other racket sports, football and Formula 1. The soundtrack is old-school boy bands and modern pop.</p>
     </div>
-  </div>
-</section>
+  </section>
+</main>
 
 <footer>
-  <div class="container">
+  <div class="wrap">
     &copy; <span id="year"></span> Divya Ranwka. Built with HTML, CSS &amp; JS, hosted on GitHub Pages.
   </div>
 </footer>
 
 <script src="vendor/katex/katex.min.js"></script>
-<script src="script.js?v=20261031a"></script>
+<script src="script.js?v=20261106a"></script>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>

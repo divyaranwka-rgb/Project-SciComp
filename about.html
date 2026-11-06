@@ -6,8 +6,8 @@
 <title>About — Divya Ranwka</title>
 <meta name="description" content="About Divya Ranwka: education at IIT Madras, skills, current coursework and interests.">
 <link rel="canonical" href="https://divyaranwka-rgb.github.io/Project-SciComp/about.html">
-<meta name="theme-color" content="#fdfcfb" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#13101b" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f9faf7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2a26" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
@@ -35,18 +35,12 @@
       : mq('(prefers-contrast: more)') ? 'contrast'
       : mq('(prefers-color-scheme: dark)') ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', t);
-    // arm the scroll reveal early; a failsafe shows everything if the main script never runs
-    if ('IntersectionObserver' in window && !mq('(prefers-reduced-motion: reduce)')) {
-      document.documentElement.classList.add('reveal-ready');
-      setTimeout(function () { if (!window.__revealStarted) document.documentElement.classList.remove('reveal-ready'); }, 2500);
-    }
   })();
 </script>
-<link rel="stylesheet" href="vendor/katex/katex.min.css">
-<link rel="stylesheet" href="style.css?v=20261031a">
+<link rel="stylesheet" href="style.css?v=20261106a">
 </head>
 <body>
-<div class="backdrop" aria-hidden="true"><span class="bd-glow"></span><span class="bd-grid"></span><canvas class="bd-flow"></canvas><canvas class="bd-curve"></canvas></div>
+<div class="backdrop" aria-hidden="true"><span class="bd-grid"></span><canvas class="bd-flow"></canvas><canvas class="bd-curve"></canvas></div>
 
 <nav class="navbar">
   <div class="nav-inner">
@@ -76,160 +70,102 @@
   </div>
 </nav>
 
-<header class="hero" style="padding-bottom:30px;">
-  <div class="container">
-    <span class="eyebrow">About Me</span>
-    <h1>The <span class="highlight">Story</span> So Far</h1>
-    <p class="tagline">A bit about where I've come from, what I love doing, and where I'm headed.</p>
-  </div>
-</header>
+<main class="wrap">
+  <header class="opening">
+    <h1>About</h1>
+    <p class="lead">A bit about where I've come from, what I love doing, and where I'm headed.</p>
+  </header>
 
-<section style="padding-top:0;">
-  <div class="container">
-    <div class="about-layout">
-
-    <figure class="about-photo">
-      <img src="images/profile.jpg" width="656" height="1312" alt="Standing beneath a vine-covered white archway">
-    </figure>
-
-    <div class="about-grid">
-
-      <div class="about-card">
-        <h2>🎓 Education</h2>
-        <ul class="timeline">
-          <li>
-            <span class="school">Bharatiya Vidya Bhavan Vidyashram, Jaipur</span>
-            <span class="meta">Schooling — where it all began</span>
-          </li>
-          <li>
-            <span class="school">IIT Madras</span>
-            <span class="meta">Currently pursuing a major in Mathematics</span>
-          </li>
-        </ul>
-      </div>
-
-      <div class="about-card">
-        <h2>⚡ Interests &amp; Hobbies</h2>
-        <p>When I'm away from equations, you'll usually find me chasing a ball or a beat.</p>
-        <ul>
-          <li>🏏 Cricket, 🎾 tennis and other racket sports, ⚽ football — I love both playing and watching</li>
-          <li>🏎️ Formula 1 — following the season race by race</li>
-          <li>🎵 Music — old-school boy bands and modern English pop are on constant rotation</li>
-          <li>👨‍💻 Programming and coding — my favorite way to build something out of nothing</li>
-        </ul>
-      </div>
-
-      <div class="about-card">
-        <h2>🎯 Goals</h2>
-        <p>This site is my little corner of the internet, built to:</p>
-        <ul>
-          <li>Give people a real sense of who I am beyond a resume</li>
-          <li>Help me connect with people outside my college circle</li>
-          <li>Support applications and internship opportunities</li>
-          <li>Showcase projects I'm working on, both inside and outside IIT Madras</li>
-        </ul>
-      </div>
-
+  <section class="sec">
+    <h2 class="sec-label">Background</h2>
+    <div class="sec-body">
+      <dl class="facts">
+        <dt>Bharatiya Vidya Bhavan Vidyashram, Jaipur</dt>
+        <dd>Schooling, where it all began.</dd>
+        <dt>IIT Madras</dt>
+        <dd>Currently pursuing a major in Mathematics.</dd>
+      </dl>
     </div>
+  </section>
+  <section class="sec">
+    <h2 class="sec-label">Interests</h2>
+    <div class="sec-body">
+      <figure class="about-photo">
+        <img src="images/profile.jpg" width="656" height="1312" alt="Standing beneath a vine-covered white archway">
+      </figure>
+      <p>When I'm away from equations, you'll usually find me chasing a ball or a beat.</p>
+      <ul class="plain-list">
+        <li>Cricket, tennis and other racket sports, and football. I love both playing and watching.</li>
+        <li>Formula 1, followed race by race through the season.</li>
+        <li>Music: old-school boy bands and modern English pop are on constant rotation.</li>
+        <li>Programming, my favorite way to build something out of nothing.</li>
+      </ul>
     </div>
-  </div>
-</section>
-
-<section id="skills" class="band">
-  <div class="container">
-    <h2 class="section-title">🛠️ Skills</h2>
-    <p class="section-subtitle">Languages, tools and areas I work with.</p>
-    <div class="skill-grid">
-
-      <div class="skill-group">
-        <h3>Programming</h3>
-        <div class="chip-row">
-          <span class="chip">C</span>
-          <span class="chip">C++</span>
-          <span class="chip">Python</span>
-        </div>
-      </div>
-
-      <div class="skill-group">
-        <h3>Scientific &amp; Statistical Computing</h3>
-        <div class="chip-row">
-          <span class="chip">MATLAB</span>
-          <span class="chip">Mathematica</span>
-          <span class="chip">R</span>
-        </div>
-      </div>
-
-      <div class="skill-group">
-        <h3>Libraries &amp; Tools</h3>
-        <div class="chip-row">
-          <span class="chip">NumPy</span>
-          <span class="chip">Pandas</span>
-          <span class="chip">scikit-learn</span>
-          <span class="chip">Git &amp; GitHub</span>
-        </div>
-      </div>
-
-      <div class="skill-group wide">
-        <h3>Areas</h3>
-        <div class="chip-row">
-          <span class="chip">Algorithms &amp; Data Structures</span>
-          <span class="chip">Competitive Programming</span>
-          <span class="chip">Machine Learning</span>
-          <span class="chip">Mathematical Proof</span>
-        </div>
-      </div>
-
+  </section>
+  <section class="sec">
+    <h2 class="sec-label">Skills</h2>
+    <div class="sec-body">
+      <dl class="skills">
+        <dt>Programming</dt>
+        <dd>C, C++, Python</dd>
+        <dt>Scientific and statistical computing</dt>
+        <dd>MATLAB, Mathematica, R</dd>
+        <dt>Libraries and tools</dt>
+        <dd>NumPy, pandas, scikit-learn, Git and GitHub</dd>
+        <dt>Areas</dt>
+        <dd>Algorithms and data structures, competitive programming, machine learning, mathematical proof</dd>
+      </dl>
     </div>
-  </div>
-</section>
-
-<section id="coursework">
-  <div class="container">
-    <h2 class="section-title">📚 Current Coursework</h2>
-    <p class="section-subtitle">What I'm studying this semester at IIT Madras.</p>
-    <div class="course-grid">
-
-      <div class="course-card featured">
-        <span class="course-badge">Proof-based</span>
+  </section>
+  <section class="sec" id="coursework">
+    <h2 class="sec-label">This semester</h2>
+    <div class="sec-body">
+      <div class="course">
         <h3>Calculus 101</h3>
-        <p class="course-sub">Rigorous Single-Variable Calculus</p>
+        <p class="alt">Rigorous single-variable calculus, proof-based</p>
         <p>Builds calculus from first principles, starting with where the real numbers come from. Every concept is defined precisely and every result is proved, rather than taught as a set of techniques.</p>
       </div>
-
-      <div class="course-card">
+      <div class="course">
         <h3>Linear Algebra via Matrices</h3>
         <p>Linear algebra developed through the language of matrices, the foundation for much of applied mathematics, data science and machine learning.</p>
       </div>
-
-      <div class="course-card">
+      <div class="course">
         <h3>Scientific Computing</h3>
         <p>Computational problem-solving across MATLAB, Mathematica, Python and R. This website was built as a project for the course.</p>
       </div>
-
-      <div class="course-card">
+      <div class="course">
         <h3>Physics 101</h3>
         <p>First-year university physics.</p>
       </div>
-
     </div>
-  </div>
-</section>
-
-<section>
-  <div class="container" style="text-align:center;">
-    <h2 class="section-title">Let's Connect</h2>
-    <p class="section-subtitle" style="margin-left:auto;margin-right:auto;">Have a project idea, an opportunity, or just want to talk cricket and F1? I'd love to hear from you.</p>
-    <a href="contact.html" class="btn btn-primary">Contact Me</a>
-  </div>
-</section>
+  </section>
+  <section class="sec">
+    <h2 class="sec-label">Why this site</h2>
+    <div class="sec-body">
+      <p>This site is my little corner of the internet, built to:</p>
+      <ul class="plain-list">
+        <li>Give people a real sense of who I am beyond a resume</li>
+        <li>Help me connect with people outside my college circle</li>
+        <li>Support applications and internship opportunities</li>
+        <li>Showcase projects I'm working on, both inside and outside IIT Madras</li>
+      </ul>
+    </div>
+  </section>
+  <section class="sec">
+    <h2 class="sec-label">Say hello</h2>
+    <div class="sec-body">
+      <p>Have a project idea, an opportunity, or just want to talk cricket and F1? I'd love to hear from you. <a href="contact.html">Write to me</a>.</p>
+    </div>
+  </section>
+</main>
 
 <footer>
-  <div class="container">
+  <div class="wrap">
     &copy; <span id="year"></span> Divya Ranwka. Built with HTML, CSS &amp; JS, hosted on GitHub Pages.
   </div>
 </footer>
 
-<script src="script.js?v=20261031a"></script>
+<script src="script.js?v=20261106a"></script>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>

@@ -6,8 +6,8 @@
 <title>Contact — Divya Ranwka</title>
 <meta name="description" content="Get in touch with Divya Ranwka by email, LinkedIn, GitHub or Codeforces.">
 <link rel="canonical" href="https://divyaranwka-rgb.github.io/Project-SciComp/contact.html">
-<meta name="theme-color" content="#fdfcfb" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#13101b" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f9faf7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2a26" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
@@ -35,18 +35,12 @@
       : mq('(prefers-contrast: more)') ? 'contrast'
       : mq('(prefers-color-scheme: dark)') ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', t);
-    // arm the scroll reveal early; a failsafe shows everything if the main script never runs
-    if ('IntersectionObserver' in window && !mq('(prefers-reduced-motion: reduce)')) {
-      document.documentElement.classList.add('reveal-ready');
-      setTimeout(function () { if (!window.__revealStarted) document.documentElement.classList.remove('reveal-ready'); }, 2500);
-    }
   })();
 </script>
-<link rel="stylesheet" href="vendor/katex/katex.min.css">
-<link rel="stylesheet" href="style.css?v=20261031a">
+<link rel="stylesheet" href="style.css?v=20261106a">
 </head>
 <body>
-<div class="backdrop" aria-hidden="true"><span class="bd-glow"></span><span class="bd-grid"></span><canvas class="bd-flow"></canvas><canvas class="bd-curve"></canvas></div>
+<div class="backdrop" aria-hidden="true"><span class="bd-grid"></span><canvas class="bd-flow"></canvas><canvas class="bd-curve"></canvas></div>
 
 <nav class="navbar">
   <div class="nav-inner">
@@ -76,41 +70,57 @@
   </div>
 </nav>
 
-<header class="hero" style="padding-bottom:30px;">
-  <div class="container">
-    <span class="eyebrow">Get In Touch</span>
-    <h1>Let's <span class="highlight">Connect</span></h1>
-    <p class="tagline">Have an opportunity, a project idea, a tricky problem, or a hot take on cricket? I'd love to hear it.</p>
-  </div>
-</header>
+<main class="wrap">
+  <header class="opening">
+    <h1>Contact</h1>
+    <p class="lead">Have an opportunity, a project idea, a tricky problem, or a hot take on cricket? I'd love to hear it.</p>
+  </header>
 
-<section style="padding-top:0;">
-  <div class="container">
-    <div class="compose-card">
-      <h2>✍️ Drop me a line</h2>
-      <p class="compose-intro">Pick a topic, add a note, and your email app will open with everything ready to send.</p>
+  <section class="sec">
+    <h2 class="sec-label">Find me</h2>
+    <div class="sec-body">
+      <dl class="elsewhere">
+        <dt>Email</dt>
+        <dd><a href="mailto:divyaranwka@gmail.com">divyaranwka@<wbr>gmail.com</a></dd>
+        <dt>IIT Madras email</dt>
+        <dd><a href="mailto:ma26b008@smail.iitm.ac.in">ma26b008@<wbr>smail.iitm.ac.in</a></dd>
+        <dt>GitHub</dt>
+        <dd><a href="https://github.com/divyaranwka-rgb" target="_blank" rel="noopener">divyaranwka-rgb</a></dd>
+        <dt>LinkedIn</dt>
+        <dd><a href="https://www.linkedin.com/in/divya-ranwka-b182493a9/" target="_blank" rel="noopener">Divya Ranwka</a></dd>
+        <dt>Codeforces</dt>
+        <dd><a href="https://codeforces.com/profile/Uncomplecable" target="_blank" rel="noopener">Uncomplecable</a></dd>
+        <dt>Instagram</dt>
+        <dd><a href="https://www.instagram.com/divyaranwka2008/" target="_blank" rel="noopener">@divyaranwka2008</a></dd>
+      </dl>
+    </div>
+  </section>
+  <section class="sec">
+    <h2 class="sec-label">Write a message</h2>
+    <div class="sec-body">
+      <p>Pick a topic, add a note, and your email app will open with everything ready to send.</p>
       <form id="compose" novalidate>
         <fieldset class="topic-picker">
           <legend>What's it about?</legend>
           <label class="topic">
             <input type="radio" name="topic" value="Internship or opportunity" data-placeholder="Hi! I'd love to talk about an opportunity…" checked>
-            <span>💼 Internship or opportunity</span>
+            <span>Internship or opportunity</span>
           </label>
           <label class="topic">
             <input type="radio" name="topic" value="Project collaboration" data-placeholder="I'm working on something you might like…">
-            <span>🤝 Project collaboration</span>
+            <span>Project collaboration</span>
           </label>
           <label class="topic">
             <input type="radio" name="topic" value="Maths or coding question" data-placeholder="Here's a problem I've been stuck on…">
-            <span>🧮 Maths or coding question</span>
+            <span>Maths or coding question</span>
           </label>
           <label class="topic">
             <input type="radio" name="topic" value="Cricket or F1 banter" data-placeholder="Settle this for me: who's the greatest of all time?">
-            <span>🏏 Cricket or F1 banter</span>
+            <span>Cricket or F1 banter</span>
           </label>
           <label class="topic">
             <input type="radio" name="topic" value="Just saying hi" data-placeholder="Hey! Just wanted to say hello…">
-            <span>👋 Just saying hi</span>
+            <span>Just saying hi</span>
           </label>
         </fieldset>
         <label class="field">
@@ -119,72 +129,26 @@
         </label>
         <label class="field">
           <span>Message</span>
-          <textarea name="message" rows="4" placeholder="Hi! I'd love to talk about an opportunity…"></textarea>
+          <textarea name="message" rows="5" placeholder="Hi! I'd love to talk about an opportunity…"></textarea>
         </label>
         <div class="compose-actions">
-          <button type="submit" class="btn btn-primary">Open in my email app ✉️</button>
-          <button type="button" class="btn btn-secondary" id="copy-email" data-email="divyaranwka@gmail.com">Copy email address</button>
+          <button type="submit" class="btn">Open in my email app</button>
+          <button type="button" class="btn-quiet" id="copy-email" data-email="divyaranwka@gmail.com">Copy email address</button>
           <span class="copy-status" role="status" aria-live="polite"></span>
         </div>
         <p class="compose-note">Nothing is sent from this page. It just prepares an email in your own app.</p>
       </form>
     </div>
-  </div>
-</section>
-
-<section>
-  <div class="container">
-    <h2 class="section-title center">Find Me Online</h2>
-    <p class="section-subtitle center">Code, competitions, and everything in between.</p>
-    <div class="contact-grid">
-
-      <a href="mailto:divyaranwka@gmail.com" class="contact-card">
-        <div class="icon">✉️</div>
-        <h3>Personal Email</h3>
-        <span>divyaranwka@<wbr>gmail.com</span>
-      </a>
-
-      <a href="mailto:ma26b008@smail.iitm.ac.in" class="contact-card">
-        <div class="icon">🎓</div>
-        <h3>IIT Madras Email</h3>
-        <span>ma26b008@<wbr>smail.iitm.ac.in</span>
-      </a>
-
-      <a href="https://github.com/divyaranwka-rgb" target="_blank" rel="noopener" class="contact-card">
-        <div class="icon">🐙</div>
-        <h3>GitHub</h3>
-        <span>divyaranwka-rgb</span>
-      </a>
-
-      <a href="https://www.linkedin.com/in/divya-ranwka-b182493a9/" target="_blank" rel="noopener" class="contact-card">
-        <div class="icon">💼</div>
-        <h3>LinkedIn</h3>
-        <span>Divya Ranwka</span>
-      </a>
-
-      <a href="https://codeforces.com/profile/Uncomplecable" target="_blank" rel="noopener" class="contact-card">
-        <div class="icon">🏆</div>
-        <h3>Codeforces</h3>
-        <span>Uncomplecable</span>
-      </a>
-
-      <a href="https://www.instagram.com/divyaranwka2008/" target="_blank" rel="noopener" class="contact-card">
-        <div class="icon">📸</div>
-        <h3>Instagram</h3>
-        <span>@divyaranwka2008</span>
-      </a>
-
-    </div>
-  </div>
-</section>
+  </section>
+</main>
 
 <footer>
-  <div class="container">
+  <div class="wrap">
     &copy; <span id="year"></span> Divya Ranwka. Built with HTML, CSS &amp; JS, hosted on GitHub Pages.
   </div>
 </footer>
 
-<script src="script.js?v=20261031a"></script>
+<script src="script.js?v=20261106a"></script>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>

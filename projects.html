@@ -6,8 +6,8 @@
 <title>Projects — Divya Ranwka</title>
 <meta name="description" content="Projects by Divya Ranwka: a lung cancer risk model, this portfolio website, and competitive programming.">
 <link rel="canonical" href="https://divyaranwka-rgb.github.io/Project-SciComp/projects.html">
-<meta name="theme-color" content="#fdfcfb" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#13101b" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f9faf7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1f2a26" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
@@ -35,18 +35,12 @@
       : mq('(prefers-contrast: more)') ? 'contrast'
       : mq('(prefers-color-scheme: dark)') ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', t);
-    // arm the scroll reveal early; a failsafe shows everything if the main script never runs
-    if ('IntersectionObserver' in window && !mq('(prefers-reduced-motion: reduce)')) {
-      document.documentElement.classList.add('reveal-ready');
-      setTimeout(function () { if (!window.__revealStarted) document.documentElement.classList.remove('reveal-ready'); }, 2500);
-    }
   })();
 </script>
-<link rel="stylesheet" href="vendor/katex/katex.min.css">
-<link rel="stylesheet" href="style.css?v=20261031a">
+<link rel="stylesheet" href="style.css?v=20261106a">
 </head>
 <body>
-<div class="backdrop" aria-hidden="true"><span class="bd-glow"></span><span class="bd-grid"></span><canvas class="bd-flow"></canvas><canvas class="bd-curve"></canvas></div>
+<div class="backdrop" aria-hidden="true"><span class="bd-grid"></span><canvas class="bd-flow"></canvas><canvas class="bd-curve"></canvas></div>
 
 <nav class="navbar">
   <div class="nav-inner">
@@ -76,74 +70,48 @@
   </div>
 </nav>
 
-<header class="hero" style="padding-bottom:30px;">
-  <div class="container">
-    <span class="eyebrow">My Work</span>
-    <h1>Featured <span class="highlight">Projects</span></h1>
-    <p class="tagline">A few things I've built or am currently working on.</p>
-  </div>
-</header>
+<main class="wrap">
+  <header class="opening">
+    <h1>Projects</h1>
+    <p class="lead">A few things I've built or am currently working on.</p>
+  </header>
 
-<section style="padding-top:0;">
-  <div class="container">
-
-    <div class="project-grid">
-
-      <div class="project-card">
-        <div class="project-thumb">🫁</div>
-        <div class="project-body">
-          <h3>Lung Cancer Risk Detection Model</h3>
-          <p>A school project applying machine learning to healthcare: a logistic regression model trained on a 310-patient dataset of lifestyle and clinical risk factors (smoking, anxiety, chronic disease, wheezing, chest pain, and more) to classify lung cancer risk. Built the full pipeline — data cleaning and encoding, an 70/30 train-test split, model training, and evaluation with a confusion matrix, accuracy, precision, and recall.</p>
-          <div class="tag-row">
-            <span class="tag">Python</span>
-            <span class="tag">Pandas &amp; NumPy</span>
-            <span class="tag">Scikit-learn</span>
-            <span class="tag">Logistic Regression</span>
-          </div>
-          <a href="https://github.com/divyaranwka-rgb/Lung-Cancer-Detection-model" target="_blank" rel="noopener" class="project-link">View on GitHub →</a>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-thumb">💻</div>
-        <div class="project-body">
-          <h3>Personal Portfolio Website</h3>
-          <p>Built for the Scientific Computing course at IIT Madras: the site you're on now. Developed with an AI coding assistant (Claude): I directed the content, structure and design, and published it on GitHub Pages. Features a responsive layout, light, dark and high-contrast themes, an interactive Taylor-series playground, and a message builder on the contact page.</p>
-          <div class="tag-row">
-            <span class="tag">AI-Assisted Development</span>
-            <span class="tag">GitHub Pages</span>
-            <span class="tag">Git</span>
-          </div>
-          <a href="https://github.com/divyaranwka-rgb/Project-SciComp" target="_blank" rel="noopener" class="project-link">View on GitHub →</a>
-        </div>
-      </div>
-
-      <div class="project-card">
-        <div class="project-thumb">🏆</div>
-        <div class="project-body">
-          <h3>Competitive Programming</h3>
-          <p>Solving algorithmic problems in C++ under contest conditions. Competed in the IIT Madras Programming Guild selection contest and in Code Decode, a contest open to students from IIT Madras and IIT Delhi. Practising regularly on Codeforces to sharpen my skills in algorithms and data structures.</p>
-          <div class="tag-row">
-            <span class="tag ongoing">Ongoing</span>
-            <span class="tag">C++</span>
-            <span class="tag">Algorithms</span>
-            <span class="tag">Data Structures</span>
-          </div>
-          <a href="https://codeforces.com/profile/Uncomplecable" target="_blank" rel="noopener" class="project-link">View Codeforces Profile →</a>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
+  <section class="sec">
+    <p class="sec-label">School project</p>
+    <article class="sec-body entry">
+      <h2>Lung Cancer Risk Detection Model</h2>
+      <p>A school project applying machine learning to healthcare: a logistic regression model trained on a 310-patient dataset of lifestyle and clinical risk factors (smoking, anxiety, chronic disease, wheezing, chest pain, and more) to classify lung cancer risk. Built the full pipeline: data cleaning and encoding, a 70/30 train-test split, model training, and evaluation with a confusion matrix, accuracy, precision, and recall.</p>
+      <p class="tools">Built with <em>Python</em>, <em>pandas</em>, <em>NumPy</em> and <em>scikit-learn</em>.</p>
+      <p><a href="https://github.com/divyaranwka-rgb/Lung-Cancer-Detection-model" target="_blank" rel="noopener">Code on GitHub</a></p>
+    </article>
+  </section>
+  <section class="sec">
+    <p class="sec-label">Course project</p>
+    <article class="sec-body entry">
+      <h2>Personal Portfolio Website</h2>
+      <p>Built for the Scientific Computing course at IIT Madras: the site you're on now. Developed with an AI coding assistant (Claude): I directed the content, structure and design, and published it on GitHub Pages. Features a responsive layout, light, dark and high-contrast themes, an interactive Taylor-series playground, and a message builder on the contact page.</p>
+      <p class="tools">Built with <em>AI-assisted development</em>, <em>Git</em> and <em>GitHub Pages</em>.</p>
+      <p><a href="https://github.com/divyaranwka-rgb/Project-SciComp" target="_blank" rel="noopener">Code on GitHub</a></p>
+    </article>
+  </section>
+  <section class="sec">
+    <p class="sec-label status-ongoing">Ongoing</p>
+    <article class="sec-body entry">
+      <h2>Competitive Programming</h2>
+      <p>Solving algorithmic problems in C++ under contest conditions. Competed in the IIT Madras Programming Guild selection contest and in Code Decode, a contest open to students from IIT Madras and IIT Delhi. Practising regularly on Codeforces to sharpen my skills in algorithms and data structures.</p>
+      <p class="tools">Written in <em>C++</em>; mostly <em>algorithms</em> and <em>data structures</em>.</p>
+      <p><a href="https://codeforces.com/profile/Uncomplecable" target="_blank" rel="noopener">My Codeforces profile</a></p>
+    </article>
+  </section>
+</main>
 
 <footer>
-  <div class="container">
+  <div class="wrap">
     &copy; <span id="year"></span> Divya Ranwka. Built with HTML, CSS &amp; JS, hosted on GitHub Pages.
   </div>
 </footer>
 
-<script src="script.js?v=20261031a"></script>
+<script src="script.js?v=20261106a"></script>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>

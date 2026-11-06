@@ -116,32 +116,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Home: typing effect for "I'm into ..." (plain word swaps if the visitor prefers reduced motion)
-  var rot = document.querySelector('.rotator-word');
-  if (rot) {
-    var words = rot.getAttribute('data-words').split('|');
-    var wi = 0, ci = words[0].length, deleting = true;
-    if (reduceMotion) {
-      setInterval(function () { wi = (wi + 1) % words.length; rot.textContent = words[wi]; }, 2800);
-    } else {
-      var tick = function () {
-        var w = words[wi];
-        if (deleting) {
-          ci--;
-          if (ci <= 0) { deleting = false; wi = (wi + 1) % words.length; }
-        } else {
-          ci++;
-        }
-        rot.textContent = words[wi].slice(0, Math.max(ci, 0));
-        var delay = deleting ? 45 : 85;
-        if (!deleting && ci >= words[wi].length) { deleting = true; delay = 1700; }
-        if (deleting && ci === 0) delay = 300;
-        setTimeout(tick, delay);
-      };
-      setTimeout(tick, 2200);
-    }
-  }
-
   // Home: Taylor series playground for sin x
   var canvas = document.getElementById('taylor-canvas');
   if (canvas && canvas.getContext) {
@@ -344,11 +318,11 @@ document.addEventListener('DOMContentLoaded', function () {
       var ok = false;
       try { ok = document.execCommand('copy'); } catch (err) {}
       document.body.removeChild(tmp);
-      showStatus(ok ? 'Copied! ✓' : EMAIL);
+      showStatus(ok ? 'Copied to clipboard' : EMAIL);
     }
     copyBtn.addEventListener('click', function () {
       if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(EMAIL).then(function () { showStatus('Copied! ✓'); }, fallbackCopy);
+        navigator.clipboard.writeText(EMAIL).then(function () { showStatus('Copied to clipboard'); }, fallbackCopy);
       } else {
         fallbackCopy();
       }
@@ -474,7 +448,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // sit the tracer in the empty right-hand margin beside the content column
     function curveBox() {
-      var margin = (W - 1080) / 2;
+      var margin = (W - 1088) / 2;
       var R = Math.min(120, H * 0.15, (margin - 48) / 2);
       if (R < 55) return null;                        // no room: leave it out
       return { cx: W - margin / 2, cy: H - R - 80, R: R };
@@ -538,35 +512,4 @@ document.addEventListener('DOMContentLoaded', function () {
       .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   })();
 
-  // Navbar shadow once scrolled
-  var navbar = document.querySelector('.navbar');
-  if (navbar) {
-    var onScroll = function () { navbar.classList.toggle('scrolled', window.scrollY > 8); };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-  }
-
-  // Gentle scroll reveal (armed in <head>; skipped without IntersectionObserver or with reduced motion)
-  if (document.documentElement.classList.contains('reveal-ready')) {
-    window.__revealStarted = true;
-    var SEL = '.highlight-card, .project-card, .about-photo, .about-card, .skill-group, .course-card, .playground-card, .compose-card, .contact-card, .chip-grid, .section-title, .section-subtitle';
-    var GRID = '.highlight-card, .project-card, .about-card, .skill-group, .course-card, .contact-card';
-    var targets = document.querySelectorAll(SEL);
-    targets.forEach(function (el) {
-      var sibs = el.parentElement ? Array.prototype.filter.call(el.parentElement.children, function (c) { return c.matches(GRID); }) : [];
-      var idx = sibs.indexOf(el);
-      if (idx > 0) el.style.transitionDelay = Math.min(idx, 5) * 70 + 'ms';
-    });
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        var el = en.target;
-        el.classList.add('is-visible');
-        io.unobserve(el);
-        // once revealed, hand control back to the element's own hover transitions
-        setTimeout(function () { el.classList.add('reveal-done'); el.style.transitionDelay = ''; }, 1100);
-      });
-    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.06 });
-    targets.forEach(function (el) { io.observe(el); });
-  }
 });
